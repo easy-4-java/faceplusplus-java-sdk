@@ -2,6 +2,8 @@
 
 [English](./README.md) | [简体中文](./README.zh-CN.md)
 
+[![Java](https://img.shields.io/badge/Java-21-orange)](https://github.com/easy-4-java/faceplusplus-java-sdk) [![License](https://img.shields.io/badge/license-Apache%202.0-green)](https://www.apache.org/licenses/LICENSE-2.0.txt)
+
 面向 Face++（旷视）人脸识别 API 的 Java SDK。以模板风格 API 提供人脸检测、分析、比对、搜索、皮肤分析与人脸库（FaceSet）管理，底层基于 OkHttp 3 与 Jackson。
 
 ## 目录
