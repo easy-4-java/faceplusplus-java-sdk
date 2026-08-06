@@ -2,14 +2,11 @@
 
 [English](./README.md) | [简体中文](./README.zh-CN.md)
 
-![Java](https://img.shields.io/badge/Java-21-orange) ![License](https://img.shields.io/badge/License-Apache%202.0-blue)
-
 面向 Face++（旷视）人脸识别 API 的 Java SDK。以模板风格 API 提供人脸检测、分析、比对、搜索、皮肤分析与人脸库（FaceSet）管理，底层基于 OkHttp 3 与 Jackson。
 
-<a id="1-project-overview"></a>
 ## 目录
 
-- [1. 项目概览](#1-project-overview)
+- [1. 项目概览](#1-项目概览)
 - [2. 功能与状态](#2-features--status)
 - [3. 环境要求与兼容性](#3-requirements--compatibility)
 - [4. 架构与模块](#4-architecture--modules)

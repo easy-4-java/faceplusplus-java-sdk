@@ -2,8 +2,6 @@
 
 [English](./README.md) | [简体中文](./README.zh-CN.md)
 
-![Java](https://img.shields.io/badge/Java-21-orange) ![License](https://img.shields.io/badge/License-Apache%202.0-blue)
-
 A Java SDK for the Face++ (Megvii) face recognition API. Template-style operations for face detection, analysis, comparison, search, skin analysis and faceset (face group) management, powered by OkHttp 3 and Jackson.
 
 ## Table of Contents
