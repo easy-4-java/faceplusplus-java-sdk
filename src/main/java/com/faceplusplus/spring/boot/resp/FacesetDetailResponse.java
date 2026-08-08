@@ -23,59 +23,54 @@ import lombok.EqualsAndHashCode;
 
 import java.util.List;
 
+/**
+ * Response from the Get FaceSet Detail API.
+ * Contains full FaceSet metadata including token, display name, face count,
+ * face token list, tags, outer_id, user data, and pagination cursor.
+ *
+ * @author [@Loong Wan](https://github.com/loong10k)
+ * @since 3.0.0
+ * @see com.faceplusplus.spring.boot.FaceppFacesetOperations#getFacesetByToken(String, int)
+ * @see com.faceplusplus.spring.boot.FaceppFacesetOperations#getFacesetByOuterId(String, int)
+ */
 @Data
 @EqualsAndHashCode(callSuper=false)
 @JsonInclude( JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = false)
 public class FacesetDetailResponse extends FaceppResponse {
 
-	/**
-	 * 1、FaceSet 的标识
-	 */
+	/** FaceSet token identifier. */
 	@JsonProperty("faceset_token")
 	private String facesetToken;
 
-	/**
-	 * 2、人脸集合的名字，最长256个字符，不能包括字符^@,&=*'"
-	 */
+	/** Display name of the FaceSet. Max 256 characters. */
 	@JsonProperty("display_name")
 	private String displayName;
 
-	/**
-	 * 3、FaceSet中的face_token总数量
-	 */
+	/** Total number of face tokens in the FaceSet. */
 	@JsonProperty("face_count")
 	private Integer faceCount;
 
-	/**
-	 * 4、face_token的数组
-	 * 注：如果该 FaceSet 下没有 face_token，则返回空数组。
-	 */
+	/** List of face tokens in the FaceSet. Empty if no faces exist. */
 	@JsonProperty("face_tokens")
 	private List<String> faceTokens;
 
-	/**
-	 * 5、FaceSet 自定义标签组成的字符串，用来对 FaceSet 分组。最长255个字符，多个 tag 用逗号分隔，每个 tag 不能包括字符^@,&=*'"
-	 */
+	/** Comma-separated custom tags for grouping FaceSets. */
 	@JsonProperty("tags")
 	private String tags;
 
-	/**
-	 * 6、用户自定义的 FaceSet 标识，如果未定义则返回值为空
-	 */
+	/** User-defined FaceSet identifier. Empty if not defined. */
 	@JsonProperty("outer_id")
 	private String outerId;
 
-	/**
-	 * 7、自定义用户信息，不大于16 KB，不能包括字符^@,&=*'"
-	 */
+	/** Custom user data. Max 16 KB. */
 	@JsonProperty("user_data")
 	private String userData;
 
 	/**
-	 * 8、用于进行下一次请求。返回值表示排在此次返回的所有 face_token 之后的下一个 face_token 的序号。
-	 * 如果返回此字段，则说明未返回完此 FaceSet 下的所有 face_token。可以将此字段的返回值，在下一次调用时传入 start 字段中，获取接下来的 face_token。
-	 * 如果没有返回该字段，则说明已经返回此 FaceSet 下的所有 face_token。
+	 * Pagination cursor for retrieving the next page of face tokens.
+	 * Present only if more face tokens remain. Pass this value as the
+	 * {@code start} parameter in the next request.
 	 */
 	@JsonProperty("next")
 	private String next;

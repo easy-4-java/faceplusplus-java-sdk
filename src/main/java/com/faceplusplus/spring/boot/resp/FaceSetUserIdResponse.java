@@ -21,21 +21,25 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+/**
+ * Response from the Set Face User ID API.
+ * Confirms the face token and the user-defined identifier that was set.
+ *
+ * @author [@Loong Wan](https://github.com/loong10k)
+ * @since 3.0.0
+ * @see com.faceplusplus.spring.boot.FaceppFacesetOperations#createFace(String, String)
+ */
 @Data
 @EqualsAndHashCode(callSuper=false)
 @JsonInclude( JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = false)
 public class FaceSetUserIdResponse extends FaceppResponse {
 
-	/**
-	 * 1、人脸token
-	 */
+	/** The face token whose user_id was set. */
 	@JsonProperty("face_token")
 	private String faceToken;
 
-	/**
-	 * 2、用户自定义的标识信息
-	 */
+	/** The user-defined identifier that was assigned to the face. */
 	@JsonProperty("user_id")
 	private String userId;
 
