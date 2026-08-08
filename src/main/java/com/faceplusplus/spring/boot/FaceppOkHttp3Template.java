@@ -33,24 +33,47 @@ import java.util.function.BiFunction;
 import java.util.function.Consumer;
 
 /**
- * OkHttp3 常规请求模板
+ * OkHttp3-based HTTP request template for the Face++ SDK.
+ * Supports synchronous and asynchronous requests, JSON and multipart form data,
+ * and automatic response deserialization.
  *
  * @author [@Loong Wan](https://github.com/loong10k)
+ * @since 3.0.0
+ * @see FaceppProperties
+ * @see FaceppResponse
  */
 @Slf4j
 public class FaceppOkHttp3Template  {
 
+	/** Content type for JSON requests. */
 	public final static String APPLICATION_JSON_VALUE = "application/json";
+
+	/** Content type for JSON requests with UTF-8 encoding. */
 	public final static String APPLICATION_JSON_UTF8_VALUE = "application/json;charset=UTF-8";
+
+	/** Content type for binary stream requests. */
 	public final static String APPLICATION_OCTET_STREAM_VALUE = "application/octet-stream";
+
+	/** Parsed media type for JSON. */
 	public final static MediaType APPLICATION_JSON = MediaType.parse(APPLICATION_JSON_VALUE);
+
+	/** Parsed media type for JSON with UTF-8 encoding. */
 	public final static MediaType APPLICATION_JSON_UTF8 = MediaType.parse(APPLICATION_JSON_UTF8_VALUE);
+
+	/** Parsed media type for binary stream. */
 	public final static MediaType APPLICATION_OCTET_STREAM = MediaType.parse(APPLICATION_OCTET_STREAM_VALUE);
 
 	protected OkHttpClient okhttp3Client;
 	protected ObjectMapper objectMapper;
 	protected FaceppProperties agoraProperties;
 
+	/**
+	 * Constructs a new {@code FaceppOkHttp3Template} with the given HTTP client, mapper, and properties.
+	 *
+	 * @param okhttp3Client  the OkHttp3 client instance
+	 * @param objectMapper   the Jackson ObjectMapper for JSON serialization
+	 * @param agoraProperties the Face++ configuration properties
+	 */
 	public FaceppOkHttp3Template(OkHttpClient okhttp3Client, ObjectMapper objectMapper, FaceppProperties agoraProperties) {
 		this.okhttp3Client = okhttp3Client;
 		this.objectMapper = objectMapper;
@@ -58,53 +81,128 @@ public class FaceppOkHttp3Template  {
 	}
 
 	private void init() {
-		// 请求编码，默认：UTF-8
 		if (okhttp3Client == null) {
-			// 1.创建OkHttpClient对象
 			okhttp3Client = new OkHttpClient().newBuilder().connectTimeout(5000, TimeUnit.MILLISECONDS)
-					// .hostnameVerifier(okhttpHostnameVerifier)
-					// .followRedirects(properties.isFollowRedirects())
-					// .followSslRedirects(properties.isFollowSslRedirects())
 					.pingInterval(1, TimeUnit.MILLISECONDS).readTimeout(3000, TimeUnit.MILLISECONDS)
 					.retryOnConnectionFailure(true)
-					// .sslSocketFactory(trustedSSLSocketFactory, trustManager)
 					.writeTimeout(3, TimeUnit.SECONDS)
-					// Application Interceptors、Network Interceptors :
-					// https://segmentfault.com/a/1190000013164260
-					// .addNetworkInterceptor(loggingInterceptor)
-					// .addInterceptor(headerInterceptor)
 					.build();
 		}
 	}
 
+	/**
+	 * Sends a POST request without parameters.
+	 *
+	 * @param url     the request URL
+	 * @param rtClass the expected response type
+	 * @param <T>     the response type extending {@link FaceppResponse}
+	 * @return the deserialized response
+	 * @throws IOException if the request fails
+	 */
 	public <T extends FaceppResponse> T post(String url, Class<T> rtClass) throws IOException {
 		return this.doRequest(url, HttpMethod.POST, null, null, null, rtClass);
 	}
 
+	/**
+	 * Sends a POST request with query parameters.
+	 *
+	 * @param url     the request URL
+	 * @param params  the query parameters
+	 * @param rtClass the expected response type
+	 * @param <T>     the response type extending {@link FaceppResponse}
+	 * @return the deserialized response
+	 * @throws IOException if the request fails
+	 */
 	public <T extends FaceppResponse> T post(String url, Map<String, Object> params, Class<T> rtClass) throws IOException {
 		return this.doRequest(url, HttpMethod.POST, null, params, null, rtClass);
 	}
 
+	/**
+	 * Sends a POST request with headers and query parameters.
+	 *
+	 * @param url     the request URL
+	 * @param headers the request headers
+	 * @param params  the query parameters
+	 * @param rtClass the expected response type
+	 * @param <T>     the response type extending {@link FaceppResponse}
+	 * @return the deserialized response
+	 * @throws IOException if the request fails
+	 */
 	public <T extends FaceppResponse> T post(String url, Map<String, Object> headers, Map<String, Object> params, Class<T> rtClass) throws IOException {
 		return this.doRequest(url, HttpMethod.POST, headers, params, null, rtClass);
 	}
 
+	/**
+	 * Sends a POST request with headers, query parameters, and a JSON body.
+	 *
+	 * @param url         the request URL
+	 * @param headers     the request headers
+	 * @param params      the query parameters
+	 * @param bodyContent the JSON body content
+	 * @param rtClass     the expected response type
+	 * @param <T>         the response type extending {@link FaceppResponse}
+	 * @return the deserialized response
+	 * @throws IOException if the request fails
+	 */
 	public <T extends FaceppResponse> T post(String url, Map<String, Object> headers, Map<String, Object> params, Map<String, Object> bodyContent, Class<T> rtClass) throws IOException {
 		return this.doRequest(url, HttpMethod.POST, headers, params, bodyContent, rtClass);
 	}
 
+	/**
+	 * Sends a GET request without parameters.
+	 *
+	 * @param url     the request URL
+	 * @param rtClass the expected response type
+	 * @param <T>     the response type extending {@link FaceppResponse}
+	 * @return the deserialized response
+	 * @throws IOException if the request fails
+	 */
 	public <T extends FaceppResponse> T get(String url, Class<T> rtClass) throws IOException {
 		return this.doRequest(url, HttpMethod.GET, null, null, null, rtClass);
 	}
 
+	/**
+	 * Sends a GET request with query parameters.
+	 *
+	 * @param url     the request URL
+	 * @param params  the query parameters
+	 * @param rtClass the expected response type
+	 * @param <T>     the response type extending {@link FaceppResponse}
+	 * @return the deserialized response
+	 * @throws IOException if the request fails
+	 */
 	public <T extends FaceppResponse> T get(String url, Map<String, Object> params, Class<T> rtClass) throws IOException {
 		return this.doRequest(url, HttpMethod.GET, null, params, null, rtClass);
 	}
 
+	/**
+	 * Sends a GET request with headers and query parameters.
+	 *
+	 * @param url     the request URL
+	 * @param headers the request headers
+	 * @param params  the query parameters
+	 * @param rtClass the expected response type
+	 * @param <T>     the response type extending {@link FaceppResponse}
+	 * @return the deserialized response
+	 * @throws IOException if the request fails
+	 */
 	public <T extends FaceppResponse> T get(String url, Map<String, Object> headers, Map<String, Object> params, Class<T> rtClass) throws IOException {
 		return this.doRequest(url, HttpMethod.GET, headers, params, null, rtClass);
 	}
 
+	/**
+	 * Sends an HTTP request with full parameter control and deserializes the response.
+	 *
+	 * @param url         the request URL
+	 * @param method      the HTTP method
+	 * @param headers     the request headers (may be null)
+	 * @param queryParams the query parameters (may be null)
+	 * @param bodyContent the JSON body content (may be null)
+	 * @param rtClass     the expected response type
+	 * @param <T>         the response type extending {@link FaceppResponse}
+	 * @return the deserialized response
+	 * @throws IOException if the request fails
+	 */
 	public <T extends FaceppResponse> T doRequest(
 			String url,
 			HttpMethod method,
@@ -113,11 +211,23 @@ public class FaceppOkHttp3Template  {
 			Map<String, Object> bodyContent,
 			Class<T> rtClass) throws IOException {
 		long startTime = System.currentTimeMillis();
-		// 1.创建Request对象，设置一个url地址,设置请求方式。
 		HttpUrl httpUrl = this.getHttpUrl(url, queryParams);
 		return this.doRequest(startTime, httpUrl, method, headers, bodyContent, rtClass);
 	}
 
+	/**
+	 * Sends an HTTP request with a pre-built {@link HttpUrl} and deserializes the response.
+	 *
+	 * @param startTime   the request start timestamp for logging
+	 * @param httpUrl     the pre-built HTTP URL
+	 * @param method      the HTTP method
+	 * @param headers     the request headers (may be null)
+	 * @param bodyContent the JSON body content (may be null)
+	 * @param rtClass     the expected response type
+	 * @param <T>         the response type extending {@link FaceppResponse}
+	 * @return the deserialized response
+	 * @throws IOException if the request fails
+	 */
 	public <T extends FaceppResponse> T doRequest(
 			long startTime,
 			HttpUrl httpUrl,
@@ -125,7 +235,6 @@ public class FaceppOkHttp3Template  {
 			Map<String, Object> headers,
 			Map<String, Object> bodyContent,
 			Class<T> rtClass) throws IOException {
-		// 2.创建一个call对象,参数就是Request请求对象
 		Response response = this.doRequest(startTime, httpUrl, method, headers, bodyContent);
 		T res = null;
 		try {
@@ -138,18 +247,35 @@ public class FaceppOkHttp3Template  {
 				res.setCode(response.code());
 			}
 		} catch (Exception e) {
-			log.error("Agora >> Async Request Error : {}, use time : {}", e.getMessage(), System.currentTimeMillis() - startTime);
+			log.error("Face++ >> Request Error : {}, use time : {}", e.getMessage(), System.currentTimeMillis() - startTime);
 			res = safeInstantiate(rtClass);
 		}
 		return res;
 	}
 
+	/**
+	 * Sends a raw HTTP request and returns the raw OkHttp response.
+	 *
+	 * @param url    the request URL
+	 * @param method the HTTP method
+	 * @return the raw OkHttp response
+	 * @throws IOException if the request fails
+	 */
 	public Response doRequest(
 			String url,
 			HttpMethod method) throws IOException {
 		return this.doRequest(url, method, null);
 	}
 
+	/**
+	 * Sends a raw HTTP request with query parameters.
+	 *
+	 * @param url        the request URL
+	 * @param method     the HTTP method
+	 * @param queryParams the query parameters (may be null)
+	 * @return the raw OkHttp response
+	 * @throws IOException if the request fails
+	 */
 	public Response doRequest(
 			String url,
 			HttpMethod method,
@@ -157,6 +283,16 @@ public class FaceppOkHttp3Template  {
 		return this.doRequest(url, method, null, queryParams);
 	}
 
+	/**
+	 * Sends a raw HTTP request with headers and query parameters.
+	 *
+	 * @param url         the request URL
+	 * @param method      the HTTP method
+	 * @param headers     the request headers (may be null)
+	 * @param queryParams the query parameters (may be null)
+	 * @return the raw OkHttp response
+	 * @throws IOException if the request fails
+	 */
 	public Response doRequest(
 			String url,
 			HttpMethod method,
@@ -165,6 +301,17 @@ public class FaceppOkHttp3Template  {
 		return this.doRequest(url, method, headers, queryParams, null);
 	}
 
+	/**
+	 * Sends a raw HTTP request with headers, query parameters, and body content.
+	 *
+	 * @param url         the request URL
+	 * @param method      the HTTP method
+	 * @param headers     the request headers (may be null)
+	 * @param queryParams the query parameters (may be null)
+	 * @param bodyContent the JSON body content (may be null)
+	 * @return the raw OkHttp response
+	 * @throws IOException if the request fails
+	 */
 	public Response doRequest(
 			String url,
 			HttpMethod method,
@@ -175,6 +322,18 @@ public class FaceppOkHttp3Template  {
 		return this.doRequest(startTime, url, method, headers, queryParams, bodyContent);
 	}
 
+	/**
+	 * Sends a raw HTTP request with explicit start time for logging.
+	 *
+	 * @param startTime   the request start timestamp
+	 * @param url         the request URL
+	 * @param method      the HTTP method
+	 * @param headers     the request headers (may be null)
+	 * @param queryParams the query parameters (may be null)
+	 * @param bodyContent the JSON body content (may be null)
+	 * @return the raw OkHttp response
+	 * @throws IOException if the request fails
+	 */
 	public Response doRequest(
 			long startTime,
 			String url,
@@ -182,18 +341,27 @@ public class FaceppOkHttp3Template  {
 			Map<String, Object> headers,
 			Map<String, Object> queryParams,
 			Map<String, Object> bodyContent) throws IOException {
-		// 1.创建Request对象，设置一个url地址,设置请求方式。
 		HttpUrl httpUrl = this.getHttpUrl(url, queryParams);
 		return this.doRequest(startTime, httpUrl, method, headers, bodyContent);
 	}
 
+	/**
+	 * Sends a multipart form-data request and deserializes the response.
+	 * Used for file upload endpoints.
+	 *
+	 * @param httpUrl the request URL
+	 * @param params  the form parameters (values may be {@link File} instances)
+	 * @param rtClass the expected response type
+	 * @param <T>     the response type extending {@link FaceppResponse}
+	 * @return the deserialized response
+	 * @throws IOException if the request fails
+	 */
 	public <T extends FaceppResponse> T doPartRequest(
 			String httpUrl,
 			Map<String, Object> params,
 			Class<T> rtClass) throws IOException {
 
 		long startTime = System.currentTimeMillis();
-		// 2.创建一个call对象,参数就是Request请求对象
 		Response response = this.doPartRequest(startTime, httpUrl, params);
 		T res = null;
 		try {
@@ -206,20 +374,27 @@ public class FaceppOkHttp3Template  {
 				res.setCode(response.code());
 			}
 		} catch (Exception e) {
-			log.error("Agora >> Async Request Error : {}, use time : {}", e.getMessage(), System.currentTimeMillis() - startTime);
+			log.error("Face++ >> Request Error : {}, use time : {}", e.getMessage(), System.currentTimeMillis() - startTime);
 			res = safeInstantiate(rtClass);
 		}
 		return res;
 	}
 
+	/**
+	 * Sends a multipart form-data request and returns the raw response.
+	 *
+	 * @param startTime the request start timestamp
+	 * @param httpUrl   the request URL
+	 * @param params    the form parameters (values may be {@link File} instances)
+	 * @return the raw OkHttp response, or null if an error occurs
+	 * @throws IOException if the request fails
+	 */
 	public Response doPartRequest(
 			long startTime,
 			String httpUrl,
 			Map<String, Object> params) throws IOException {
 
-		// 1、创建Request.Builder对象
 		Request.Builder builder = new Request.Builder().url(httpUrl);
-		// 2、构建MultipartBody
 		MultipartBody.Builder bodyBuilder = new MultipartBody.Builder().setType(MultipartBody.FORM);
 		for (Map.Entry<String, Object> entry : params.entrySet()){
 			Object val = entry.getValue();
@@ -231,13 +406,12 @@ public class FaceppOkHttp3Template  {
 				bodyBuilder.addFormDataPart(entry.getKey(), Objects.toString(entry.getValue()) );
 			}
 		}
-		// 3.创建一个call对象, 参数就是Request请求对象
 		try {
 			Response response = okhttp3Client.newCall(builder.post(bodyBuilder.build()).build()).execute();
 			if (response.isSuccessful()) {
-				log.info("Agora >> Request Success : code : {}, use time : {} ", response.code(), System.currentTimeMillis() - startTime);
+				log.info("Face++ >> Request Success : code : {}, use time : {} ", response.code(), System.currentTimeMillis() - startTime);
 			} else {
-				log.error("Agora >> Request Failure : code : {}, message : {}, use time : {} ", response.code(), response.message(), System.currentTimeMillis() - startTime);
+				log.error("Face++ >> Request Failure : code : {}, message : {}, use time : {} ", response.code(), response.message(), System.currentTimeMillis() - startTime);
 			}
 			return response;
 		} catch (IOException e) {
@@ -246,6 +420,17 @@ public class FaceppOkHttp3Template  {
 		return null;
 	}
 
+	/**
+	 * Sends a raw HTTP request with a pre-built {@link HttpUrl} and returns the raw response.
+	 *
+	 * @param startTime   the request start timestamp
+	 * @param httpUrl     the pre-built HTTP URL
+	 * @param method      the HTTP method
+	 * @param headers     the request headers (may be null)
+	 * @param bodyContent the JSON body content (may be null)
+	 * @return the raw OkHttp response
+	 * @throws IOException if the request fails
+	 */
 	public Response doRequest(
 			long startTime,
 			HttpUrl httpUrl,
@@ -253,14 +438,12 @@ public class FaceppOkHttp3Template  {
 			Map<String, Object> headers,
 			Map<String, Object> bodyContent) throws IOException {
 		try {
-			// 1、创建Request.Builder对象
 			Request.Builder builder = this.createRequestBuilder(httpUrl, method, headers, bodyContent);
-			// 2.创建一个call对象, 参数就是Request请求对象
 			Response response = okhttp3Client.newCall(builder.build()).execute();
 			if (response.isSuccessful()) {
-				log.info("Agora >> Request Success : code : {}, use time : {} ", response.code(), System.currentTimeMillis() - startTime);
+				log.info("Face++ >> Request Success : code : {}, use time : {} ", response.code(), System.currentTimeMillis() - startTime);
 			} else {
-				log.error("Agora >> Request Failure : code : {}, message : {}, use time : {} ", response.code(), response.message(), System.currentTimeMillis() - startTime);
+				log.error("Face++ >> Request Failure : code : {}, message : {}, use time : {} ", response.code(), response.message(), System.currentTimeMillis() - startTime);
 			}
 			return response;
 		} catch (IOException e) {
@@ -269,6 +452,16 @@ public class FaceppOkHttp3Template  {
 		}
 	}
 
+	/**
+	 * Sends an asynchronous request with a success callback.
+	 *
+	 * @param url     the request URL
+	 * @param method  the HTTP method
+	 * @param success callback to receive the deserialized response
+	 * @param rtClass the expected response type
+	 * @param <T>     the response type extending {@link FaceppResponse}
+	 * @throws IOException if the request setup fails
+	 */
 	public <T extends FaceppResponse> void doAsyncRequest(
 			String url,
 			HttpMethod method,
@@ -277,6 +470,17 @@ public class FaceppOkHttp3Template  {
 		this.doAsyncRequest(url, method, success, null, rtClass);
 	}
 
+	/**
+	 * Sends an asynchronous request with success and failure callbacks.
+	 *
+	 * @param url     the request URL
+	 * @param method  the HTTP method
+	 * @param success callback to receive the deserialized response
+	 * @param failure callback to handle errors (may be null)
+	 * @param rtClass the expected response type
+	 * @param <T>     the response type extending {@link FaceppResponse}
+	 * @throws IOException if the request setup fails
+	 */
 	public <T extends FaceppResponse> void doAsyncRequest(
 			String url,
 			HttpMethod method,
@@ -286,6 +490,18 @@ public class FaceppOkHttp3Template  {
 		this.doAsyncRequest(url, method, null, success, failure, rtClass);
 	}
 
+	/**
+	 * Sends an asynchronous request with query parameters and callbacks.
+	 *
+	 * @param url         the request URL
+	 * @param method      the HTTP method
+	 * @param queryParams the query parameters (may be null)
+	 * @param success     callback to receive the deserialized response
+	 * @param failure     callback to handle errors (may be null)
+	 * @param rtClass     the expected response type
+	 * @param <T>         the response type extending {@link FaceppResponse}
+	 * @throws IOException if the request setup fails
+	 */
 	public <T extends FaceppResponse> void doAsyncRequest(
 			String url,
 			HttpMethod method,
@@ -296,6 +512,19 @@ public class FaceppOkHttp3Template  {
 		this.doAsyncRequest(url, method, null, queryParams, success, failure, rtClass);
 	}
 
+	/**
+	 * Sends an asynchronous request with headers, query parameters, and callbacks.
+	 *
+	 * @param url         the request URL
+	 * @param method      the HTTP method
+	 * @param headers     the request headers (may be null)
+	 * @param queryParams the query parameters (may be null)
+	 * @param success     callback to receive the deserialized response
+	 * @param failure     callback to handle errors (may be null)
+	 * @param rtClass     the expected response type
+	 * @param <T>         the response type extending {@link FaceppResponse}
+	 * @throws IOException if the request setup fails
+	 */
 	public <T extends FaceppResponse> void doAsyncRequest(
 			String url,
 			HttpMethod method,
@@ -307,6 +536,20 @@ public class FaceppOkHttp3Template  {
 		this.doAsyncRequest(url, method, headers, queryParams, null, success, failure, rtClass);
 	}
 
+	/**
+	 * Sends an asynchronous request with full parameter control.
+	 *
+	 * @param url         the request URL
+	 * @param method      the HTTP method
+	 * @param headers     the request headers (may be null)
+	 * @param queryParams the query parameters (may be null)
+	 * @param bodyContent the JSON body content (may be null)
+	 * @param success     callback to receive the deserialized response
+	 * @param failure     callback to handle errors (may be null)
+	 * @param rtClass     the expected response type
+	 * @param <T>         the response type extending {@link FaceppResponse}
+	 * @throws IOException if the request setup fails
+	 */
 	public <T extends FaceppResponse> void doAsyncRequest(
 			String url,
 			HttpMethod method,
@@ -317,11 +560,24 @@ public class FaceppOkHttp3Template  {
 			BiFunction<Call, IOException, Boolean> failure,
 			Class<T> rtClass) throws IOException {
 		long startTime = System.currentTimeMillis();
-		// 1.创建Request对象，设置一个url地址,设置请求方式。
 		HttpUrl httpUrl = this.getHttpUrl(url, queryParams);
 		this.doAsyncRequest(startTime, httpUrl, method, headers, bodyContent, success, failure, rtClass);
 	}
 
+	/**
+	 * Sends an asynchronous request with a pre-built {@link HttpUrl} and typed callbacks.
+	 *
+	 * @param startTime   the request start timestamp
+	 * @param httpUrl     the pre-built HTTP URL
+	 * @param method      the HTTP method
+	 * @param headers     the request headers (may be null)
+	 * @param bodyContent the JSON body content (may be null)
+	 * @param success     callback to receive the deserialized response
+	 * @param failure     callback to handle errors (may be null)
+	 * @param rtClass     the expected response type
+	 * @param <T>         the response type extending {@link FaceppResponse}
+	 * @throws IOException if the request setup fails
+	 */
 	public <T extends FaceppResponse> void doAsyncRequest(
 			long startTime,
 			HttpUrl httpUrl,
@@ -331,7 +587,6 @@ public class FaceppOkHttp3Template  {
 			Consumer<T> success,
 			BiFunction<Call, IOException, Boolean> failure,
 			Class<T> rtClass) throws IOException {
-		// 2.创建一个call对象,参数就是Request请求对象
 		this.doAsyncRequest(startTime, httpUrl, method, headers, bodyContent, (call, response) -> {
 			T res;
 			try {
@@ -344,7 +599,7 @@ public class FaceppOkHttp3Template  {
 					res.setCode(response.code());
 				}
 			} catch (Exception e) {
-				log.error("Agora >> Async Request Error : {}, use time : {}", e.getMessage(), System.currentTimeMillis() - startTime);
+				log.error("Face++ >> Async Request Error : {}, use time : {}", e.getMessage(), System.currentTimeMillis() - startTime);
 				res = safeInstantiate(rtClass);
 			}
 			success.accept(res);
@@ -352,6 +607,20 @@ public class FaceppOkHttp3Template  {
 		}, failure);
 	}
 
+	/**
+	 * Sends an asynchronous request with raw response callbacks.
+	 *
+	 * @param startTime   the request start timestamp
+	 * @param url         the request URL
+	 * @param method      the HTTP method
+	 * @param headers     the request headers (may be null)
+	 * @param queryParams the query parameters (may be null)
+	 * @param bodyContent the JSON body content (may be null)
+	 * @param success     callback to process the raw response
+	 * @param failure     callback to handle errors (may be null)
+	 * @param <T>         the response type extending {@link FaceppResponse}
+	 * @throws IOException if the request setup fails
+	 */
 	public <T extends FaceppResponse> void doAsyncRequest(
 			long startTime,
 			String url,
@@ -361,11 +630,23 @@ public class FaceppOkHttp3Template  {
 			Map<String, Object> bodyContent,
 			BiFunction<Call, Response, T> success,
 			BiFunction<Call, IOException, Boolean> failure) throws IOException {
-		// 1.创建Request对象，设置一个url地址,设置请求方式。
 		HttpUrl httpUrl = this.getHttpUrl(url, queryParams);
 		this.doAsyncRequest(startTime, httpUrl, method, headers, bodyContent, success, failure);
 	}
 
+	/**
+	 * Sends an asynchronous request with a pre-built {@link HttpUrl} and raw response callbacks.
+	 *
+	 * @param startTime   the request start timestamp
+	 * @param httpUrl     the pre-built HTTP URL
+	 * @param method      the HTTP method
+	 * @param headers     the request headers (may be null)
+	 * @param bodyContent the JSON body content (may be null)
+	 * @param success     callback to process the raw response
+	 * @param failure     callback to handle errors (may be null)
+	 * @param <T>         the response type extending {@link FaceppResponse}
+	 * @throws IOException if the request setup fails
+	 */
 	public <T extends FaceppResponse> void doAsyncRequest(
 			long startTime,
 			HttpUrl httpUrl,
@@ -374,13 +655,11 @@ public class FaceppOkHttp3Template  {
 			Map<String, Object> bodyContent,
 			BiFunction<Call, Response, T> success,
 			BiFunction<Call, IOException, Boolean> failure) throws IOException {
-		// 1、创建Request.Builder对象
 		Request.Builder builder = this.createRequestBuilder(httpUrl, method, headers, bodyContent);
-		// 2.创建一个call对象,参数就是Request请求对象
 		okhttp3Client.newCall(builder.build()).enqueue(new Callback() {
 
 			public void onFailure(Call call, IOException e) {
-				log.error("Agora >> Async Request Failure : {}, use time : {} ", e.getMessage(), System.currentTimeMillis() - startTime);
+				log.error("Face++ >> Async Request Failure : {}, use time : {} ", e.getMessage(), System.currentTimeMillis() - startTime);
 				if (Objects.nonNull(failure)) {
 					failure.apply(call, e);
 				}
@@ -388,9 +667,9 @@ public class FaceppOkHttp3Template  {
 
 			public void onResponse(Call call, Response response) {
 				if (response.isSuccessful()) {
-					log.info("Agora >> Async Request Success : code : {}, use time : {} ", response.code(), System.currentTimeMillis() - startTime);
+					log.info("Face++ >> Async Request Success : code : {}, use time : {} ", response.code(), System.currentTimeMillis() - startTime);
 				} else {
-					log.error("Agora >> Async Request Failure : code : {}, message : {}, use time : {} ", response.code(), response.message(), System.currentTimeMillis() - startTime);
+					log.error("Face++ >> Async Request Failure : code : {}, message : {}, use time : {} ", response.code(), response.message(), System.currentTimeMillis() - startTime);
 				}
 				if (Objects.nonNull(success)) {
 					success.apply(call, response);
@@ -400,14 +679,21 @@ public class FaceppOkHttp3Template  {
 		});
 	}
 
+	/**
+	 * Builds an {@link HttpUrl} from a base URL string and optional query parameters.
+	 *
+	 * @param httpUrl the base URL string
+	 * @param params  the query parameters to append (may be null)
+	 * @return the constructed {@link HttpUrl}
+	 */
 	public HttpUrl getHttpUrl(String httpUrl, Map<String, Object> params) {
-		log.info("Agora >> Request Url : {}", httpUrl);
+		log.info("Face++ >> Request Url : {}", httpUrl);
 		HttpUrl.Builder urlBuilder = HttpUrl.parse(httpUrl).newBuilder();
 		if ((params == null || params.isEmpty())) {
 			return urlBuilder.build();
 		}
 		if (!(params == null || params.isEmpty())) {
-			log.info("Agora >> Request Params : {}", params);
+			log.info("Face++ >> Request Params : {}", params);
 			Iterator<Entry<String, Object>> it = params.entrySet().iterator();
 			while (it.hasNext()) {
 				Entry<String, Object> entry = it.next();
@@ -417,24 +703,31 @@ public class FaceppOkHttp3Template  {
 		return urlBuilder.build();
 	}
 
+	/**
+	 * Creates a {@link Request.Builder} with the given URL, method, headers, and optional body content.
+	 *
+	 * @param httpUrl     the target HTTP URL
+	 * @param method      the HTTP method
+	 * @param headers     the request headers (may be null)
+	 * @param bodyContent the JSON body content (may be null)
+	 * @return the configured request builder
+	 * @throws IOException if JSON serialization of body content fails
+	 */
 	public Request.Builder createRequestBuilder(HttpUrl httpUrl,
 												  HttpMethod method,
 												  Map<String, Object> headers,
 												  Map<String, Object> bodyContent) throws IOException{
-		log.info("Agora >> Request Query Url : {} , Method : {}", httpUrl.query() , method.getName());
-		// 1、创建Request.Builder对象
+		log.info("Face++ >> Request Query Url : {} , Method : {}", httpUrl.query() , method.getName());
 		Request.Builder builder = new Request.Builder().url(httpUrl);
-		// 2、添加请求头
 		if(Objects.nonNull(headers)) {
-			log.info("Agora >> Request Headers : {}", headers);
+			log.info("Face++ >> Request Headers : {}", headers);
 			for (Entry<String, Object> entry : headers.entrySet()) {
 				builder.addHeader(entry.getKey(), String.valueOf(entry.getValue()));
 			}
 		}
-		// 3、添加请求体
 		if(Objects.nonNull(bodyContent)) {
 			String bodyStr = objectMapper.writeValueAsString(bodyContent);
-			log.info("Agora >> Request Body : {}", bodyStr);
+			log.info("Face++ >> Request Body : {}", bodyStr);
 			builder = method.apply(builder, bodyStr);
 		} else {
 			builder = method.apply(builder);
@@ -442,63 +735,64 @@ public class FaceppOkHttp3Template  {
 		return builder;
 	}
 
+	/**
+	 * Deserializes a JSON string into the specified type using FastJSON.
+	 *
+	 * @param json the JSON string to deserialize
+	 * @param cls  the target class type
+	 * @param <T>  the response type extending {@link FaceppResponse}
+	 * @return the deserialized object, or a default instance if parsing fails
+	 */
 	public <T extends FaceppResponse> T readValue(String json, Class<T> cls) {
 		try {
 			return JSONObject.parseObject(json, cls);
-			//return objectMapper.readValue(json, cls);
 		} catch (Exception e) {
 			log.error(e.getMessage());
 			return safeInstantiate(cls);
 		}
 	}
 
+	/**
+	 * Enumeration of HTTP methods with their request builder application logic.
+	 */
 	public static enum HttpMethod {
 
-		/**
-		 * get request.
-		 */
+		/** GET request method. */
 		GET("GET", (builder, bodyStr)->{
 			return builder.get();
 		}),
-		/**
-		 * head request.
-		 */
+
+		/** HEAD request method. */
 		HEAD("HEAD", (builder, bodyStr)->{
 			return builder.head();
 		}),
-		/**
-		 * post request.
-		 */
+
+		/** POST request method with JSON body. */
 		POST("POST", (builder, bodyStr)->{
 			return builder.post(RequestBody.create(APPLICATION_JSON_UTF8, bodyStr));
 		}),
-		/**
-		 * put request.
-		 */
+
+		/** PUT request method with JSON body. */
 		PUT("PUT", (builder, bodyStr)->{
 			return builder.put(RequestBody.create(APPLICATION_JSON_UTF8, bodyStr));
 		}),
-		/**
-		 * patch request.
-		 */
+
+		/** PATCH request method with JSON body. */
 		PATCH("PATCH", (builder, bodyStr)->{
 			return builder.patch(RequestBody.create(APPLICATION_JSON_UTF8, bodyStr));
 		}),
-		/**
-		 * delete request.
-		 */
+
+		/** DELETE request method, optionally with a JSON body. */
 		DELETE("DELETE", (builder, bodyStr)->{
 			return StringUtils.isNotBlank(bodyStr) ? builder.delete(RequestBody.create(APPLICATION_JSON_UTF8, bodyStr)) : builder.delete();
 		}),
-		/**
-		 * options request.
-		 */
+
+		/** OPTIONS request method. */
 		OPTIONS("OPTIONS", (builder, bodyStr)->{
 			return builder;
 		}),
-		/**
-		 * trace request.
-		 */
+
+		/** TRACE request method. */
 		TRACE("TRACE", (builder, bodyStr)->{
 			return builder;
 		});
@@ -511,18 +805,42 @@ public class FaceppOkHttp3Template  {
 			this.function = function;
 		}
 
+		/**
+		 * Returns the HTTP method name.
+		 *
+		 * @return the method name string
+		 */
 		public String getName() {
 			return name;
 		}
 
+		/**
+		 * Applies this HTTP method to the given request builder with a body string.
+		 *
+		 * @param builder the request builder
+		 * @param bodyStr the body content string
+		 * @return the modified request builder
+		 */
 		public Request.Builder apply(Request.Builder builder, String bodyStr){
 			return function.apply(builder, bodyStr);
 		}
 
+		/**
+		 * Applies this HTTP method to the given request builder without a body.
+		 *
+		 * @param builder the request builder
+		 * @return the modified request builder
+		 */
 		public Request.Builder apply(Request.Builder builder){
 			return function.apply(builder, null);
 		}
 
+		/**
+		 * Looks up an HTTP method by its integer ordinal.
+		 *
+		 * @param name the ordinal number
+		 * @return the matching {@link HttpMethod}, or null if not found
+		 */
 		public static HttpMethod getByName(int name) {
 			for (HttpMethod type : HttpMethod.values()) {
 				if (type.getName().equals(name)) {
@@ -534,6 +852,11 @@ public class FaceppOkHttp3Template  {
 
 	}
 
+	/**
+	 * Returns the Jackson ObjectMapper used for JSON serialization.
+	 *
+	 * @return the {@link ObjectMapper} instance
+	 */
 	public ObjectMapper getObjectMapper() {
 		return objectMapper;
 	}

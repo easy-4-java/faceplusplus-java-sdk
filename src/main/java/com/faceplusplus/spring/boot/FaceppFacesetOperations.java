@@ -27,21 +27,32 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
- * 1、人脸库管理相关接口
+ * Synchronous operations for FaceSet management, including create, delete, update,
+ * list, and face token add/remove operations, as well as face information management.
+ *
+ * @author [@Loong Wan](https://github.com/loong10k)
+ * @since 3.0.0
+ * @see FaceppFacesetAsyncOperations
+ * @see FaceppApiAddress
  */
 public class FaceppFacesetOperations extends FaceppOperations {
 
+	/**
+	 * Constructs a new {@code FaceppFacesetOperations} bound to the given template.
+	 *
+	 * @param faceppTemplate the template providing access to SDK configuration and HTTP client
+	 */
 	public FaceppFacesetOperations(FaceppTemplate faceppTemplate) {
 		super(faceppTemplate);
 	}
 
 	/**
-	 * 1、人脸库管理相关接口 > 创建人脸库 API
-	 * 创建一个人脸的集合 FaceSet，用于存储人脸标识 face_token。一个 FaceSet 能够存储10000个 face_token。
-	 * 试用API Key可以创建1000个FaceSet，正式API Key可以创建10000个FaceSet。
-	 * API：https://console.faceplusplus.com.cn/documents/4888391
-	 * @param faceset 人脸库信息
-	 * @return 操作结果
+	 * Creates a new FaceSet for storing face tokens.
+	 *
+	 * @param faceset the FaceSet creation parameters
+	 * @return the creation response containing the new FaceSet token
+	 * @throws IOException if the HTTP request fails
+	 * @see FaceppApiAddress#FACESET_CREATE
 	 */
 	public FacesetCreateResponse createFaceset(FacesetBo faceset) throws IOException {
 		String reqUrl = FaceppApiAddress.FACESET_CREATE.getUrl();
@@ -55,11 +66,12 @@ public class FaceppFacesetOperations extends FaceppOperations {
 	}
 
 	/**
-	 * 2、人脸库管理相关接口 > 删除人脸库 API
-	 * 删除一个人脸集合
-	 * API：https://console.faceplusplus.com.cn/documents/4888391
-	 * @param faceset 人脸库信息
-	 * @return 操作结果
+	 * Deletes a FaceSet.
+	 *
+	 * @param faceset the FaceSet deletion parameters (token or outer_id)
+	 * @return the deletion response
+	 * @throws IOException if the HTTP request fails
+	 * @see FaceppApiAddress#FACESET_DELETE
 	 */
 	public FacesetCreateResponse deleteFaceset(FacesetDeleteBo faceset) throws IOException {
 		String reqUrl = FaceppApiAddress.FACESET_DELETE.getUrl();
@@ -73,11 +85,12 @@ public class FaceppFacesetOperations extends FaceppOperations {
 	}
 
 	/**
-	 * 3、人脸库管理相关接口 > 更新人脸库信息 API
-	 * 更新一个人脸集合的属性
-	 * API：https://console.faceplusplus.com.cn/documents/4888391
-	 * @param faceset 人脸库信息
-	 * @return 操作结果
+	 * Updates the attributes of a FaceSet (display name, tags, user data, etc.).
+	 *
+	 * @param faceset the FaceSet update parameters
+	 * @return the update response
+	 * @throws IOException if the HTTP request fails
+	 * @see FaceppApiAddress#FACESET_UPDATE
 	 */
 	public FacesetCreateResponse updateFaceset(FacesetUpdateBo faceset) throws IOException {
 		String reqUrl = FaceppApiAddress.FACESET_UPDATE.getUrl();
@@ -91,15 +104,13 @@ public class FaceppFacesetOperations extends FaceppOperations {
 	}
 
 	/**
-	 * 2、人脸库管理相关接口 > 获取人脸库列表及信息 API
-	 * 获取某一 API Key 下的 FaceSet 列表及其 faceset_token、outer_id、display_name 和 tags 等信息。
-	 * 注意：2017年8月16日后，调用本接口将不会一次性返回全量的 FaceSet。单次查询最多返回 100 个 FaceSet。如需获取全量数据，需要配合使用 start 和 next 参数。请尽快修改调整您的程序。
-	 * API：https://console.faceplusplus.com.cn/documents/4888397
-	 * @param lastSequence 一个数字 n，表示开始返回的 faceset_token 在传入的 API Key 下的序号。
-	 * 通过传入数字 n，可以控制本 API 从第 n 个 faceset_token 开始返回。返回的 faceset_token 按照创建时间排序。每次返回1000个FaceSets。 默认值为1。
-	 * 注意：2017年8月16日后，每次返回的 FaceSet 数量上限从 1000 改为 100。并且您可以输入上一次请求本 API 返回的 next 值，用以获得接下来的 100 个 faceset_token。请尽快修改调整您的程序。
-	 * @param tags 包含需要查询的FaceSet标签的字符串，用逗号分隔
-	 * @return 操作结果
+	 * Retrieves the list of FaceSets under the current API key.
+	 *
+	 * @param lastSequence the starting sequence number for pagination
+	 * @param tags         optional tags to filter FaceSets
+	 * @return the list response containing FaceSet metadata
+	 * @throws IOException if the HTTP request fails
+	 * @see FaceppApiAddress#FACESET_LIST
 	 */
 	public FacesetListResponse getFacesetList(int lastSequence, String... tags) throws IOException {
 		String reqUrl = FaceppApiAddress.FACESET_LIST.getUrl();
@@ -119,15 +130,13 @@ public class FaceppFacesetOperations extends FaceppOperations {
 	}
 
 	/**
-	 * 2、人脸库管理相关接口 > 获取人脸库信息 API
-	 * 获取一个 FaceSet 的所有信息，包括此 FaceSet 的 faceset_token, outer_id, display_name 的信息，以及此 FaceSet 中存放的 face_token 数量与列表。
-	 * 注意：2017年8月16日后，调用本接口将不会一次性返回全部的 face_token 列表。单次查询最多返回 100 个 face_token。如需获取全量数据，需要配合使用 start 和 next 参数。请尽快修改调整您的程序。
-	 * API：https://console.faceplusplus.com.cn/documents/4888395
-	 * @param facesetToken FaceSet的标识
-	 * @param lastSequence 一个数字 n，表示开始返回的 faceset_token 在传入的 API Key 下的序号。
-	 * 通过传入数字 n，可以控制本 API 从第 n 个 faceset_token 开始返回。返回的 faceset_token 按照创建时间排序。每次返回1000个FaceSets。 默认值为1。
-	 * 注意：2017年8月16日后，每次返回的 FaceSet 数量上限从 1000 改为 100。并且您可以输入上一次请求本 API 返回的 next 值，用以获得接下来的 100 个 faceset_token。请尽快修改调整您的程序。
-	 * @return 操作结果
+	 * Retrieves detailed information of a FaceSet identified by its token.
+	 *
+	 * @param facesetToken  the FaceSet identifier
+	 * @param lastSequence  the starting sequence number for pagination
+	 * @return the detail response containing FaceSet information and face tokens
+	 * @throws IOException if the HTTP request fails
+	 * @see FaceppApiAddress#FACESET_LIST
 	 */
 	public FacesetDetailResponse getFacesetByToken(String facesetToken, int lastSequence) throws IOException {
 		String reqUrl = FaceppApiAddress.FACESET_LIST.getUrl();
@@ -142,15 +151,13 @@ public class FaceppFacesetOperations extends FaceppOperations {
 	}
 
 	/**
-	 * 2、人脸库管理相关接口 > 获取人脸库信息 API
-	 * 获取一个 FaceSet 的所有信息，包括此 FaceSet 的 faceset_token, outer_id, display_name 的信息，以及此 FaceSet 中存放的 face_token 数量与列表。
-	 * 注意：2017年8月16日后，调用本接口将不会一次性返回全部的 face_token 列表。单次查询最多返回 100 个 face_token。如需获取全量数据，需要配合使用 start 和 next 参数。请尽快修改调整您的程序。
-	 * API：https://console.faceplusplus.com.cn/documents/4888395
-	 * @param outerId 用户提供的FaceSet标识
-	 * @param lastSequence 一个数字 n，表示开始返回的 faceset_token 在传入的 API Key 下的序号。
-	 * 通过传入数字 n，可以控制本 API 从第 n 个 faceset_token 开始返回。返回的 faceset_token 按照创建时间排序。每次返回1000个FaceSets。 默认值为1。
-	 * 注意：2017年8月16日后，每次返回的 FaceSet 数量上限从 1000 改为 100。并且您可以输入上一次请求本 API 返回的 next 值，用以获得接下来的 100 个 faceset_token。请尽快修改调整您的程序。
-	 * @return 操作结果
+	 * Retrieves detailed information of a FaceSet identified by its outer_id.
+	 *
+	 * @param outerId       the user-defined FaceSet identifier
+	 * @param lastSequence  the starting sequence number for pagination
+	 * @return the detail response containing FaceSet information and face tokens
+	 * @throws IOException if the HTTP request fails
+	 * @see FaceppApiAddress#FACESET_DETAIL
 	 */
 	public FacesetDetailResponse getFacesetByOuterId(String outerId, int lastSequence) throws IOException {
 		String reqUrl = FaceppApiAddress.FACESET_DETAIL.getUrl();
@@ -165,13 +172,13 @@ public class FaceppFacesetOperations extends FaceppOperations {
 	}
 
 	/**
-	 * 3、人脸库管理相关接口 > 添加人脸 API
-	 * 为一个已经创建的 FaceSet 添加人脸标识 face_token。一个 FaceSet 最多存储1,000个 face_token。
-	 * 注意：2017年8月16日后，一个 FaceSet 能够存储的 face_token 数量将从 1000 提升至 10000。
-	 * API：https://console.faceplusplus.com.cn/documents/4888389
-	 * @param facesetToken FaceSet的标识
-	 * @param faceTokens 人脸标识 face_token 组成的字符串，可以是一个或者多个，用逗号分隔。最多不超过5个face_token
-	 * @return 操作结果
+	 * Adds face tokens to a FaceSet identified by its token.
+	 *
+	 * @param facesetToken the FaceSet identifier
+	 * @param faceTokens   varargs of face tokens to add (max 5)
+	 * @return the add response containing counts of added faces
+	 * @throws IOException if the HTTP request fails
+	 * @see FaceppApiAddress#FACE_ADD
 	 */
 	public FaceAddResponse addFaceWithToken(String facesetToken, String ... faceTokens) throws IOException {
 		String reqUrl = FaceppApiAddress.FACE_ADD.getUrl();
@@ -186,13 +193,13 @@ public class FaceppFacesetOperations extends FaceppOperations {
 	}
 
 	/**
-	 * 3、人脸库管理相关接口 > 添加人脸 API
-	 * 为一个已经创建的 FaceSet 添加人脸标识 face_token。一个 FaceSet 最多存储1,000个 face_token。
-	 * 注意：2017年8月16日后，一个 FaceSet 能够存储的 face_token 数量将从 1000 提升至 10000。
-	 * API：https://console.faceplusplus.com.cn/documents/4888389
-	 * @param outerId 用户提供的FaceSet标识
-	 * @param faceTokens 人脸标识 face_token 组成的字符串，可以是一个或者多个，用逗号分隔。最多不超过5个face_token
-	 * @return 操作结果
+	 * Adds face tokens to a FaceSet identified by its outer_id.
+	 *
+	 * @param outerId    the user-defined FaceSet identifier
+	 * @param faceTokens varargs of face tokens to add (max 5)
+	 * @return the add response containing counts of added faces
+	 * @throws IOException if the HTTP request fails
+	 * @see FaceppApiAddress#FACE_ADD
 	 */
 	public FaceAddResponse addFaceWithOuterId(String outerId, String ... faceTokens) throws IOException {
 		String reqUrl = FaceppApiAddress.FACE_ADD.getUrl();
@@ -207,13 +214,13 @@ public class FaceppFacesetOperations extends FaceppOperations {
 	}
 
 	/**
-	 * 3、人脸库管理相关接口 > 删除人脸 API
-	 * 移除一个FaceSet中的某些或者全部face_token
-	 * API：https://console.faceplusplus.com.cn/documents/4888399
-	 * @param facesetToken FaceSet的标识
-	 * @param faceTokens 需要移除的人脸标识字符串，可以是一个或者多个face_token组成，用逗号分隔。最多不能超过1,000个face_token
-	 * 注：face_tokens字符串传入“RemoveAllFaceTokens”则会移除FaceSet内所有的face_token
-	 * @return 操作结果
+	 * Removes face tokens from a FaceSet identified by its token.
+	 *
+	 * @param facesetToken the FaceSet identifier
+	 * @param faceTokens   varargs of face tokens to remove
+	 * @return the remove response containing counts of removed faces
+	 * @throws IOException if the HTTP request fails
+	 * @see FaceppApiAddress#FACE_REMOVE
 	 */
 	public FaceRemoveResponse removeFaceByToken(String facesetToken, String ... faceTokens) throws IOException {
 		String reqUrl = FaceppApiAddress.FACE_REMOVE.getUrl();
@@ -228,13 +235,13 @@ public class FaceppFacesetOperations extends FaceppOperations {
 	}
 
 	/**
-	 * 3、人脸库管理相关接口 > 删除人脸 API
-	 * 移除一个FaceSet中的某些或者全部face_token
-	 * API：https://console.faceplusplus.com.cn/documents/4888399
-	 * @param outerId 用户提供的FaceSet标识
-	 * @param faceTokens 需要移除的人脸标识字符串，可以是一个或者多个face_token组成，用逗号分隔。最多不能超过1,000个face_token
-	 * 注：face_tokens字符串传入“RemoveAllFaceTokens”则会移除FaceSet内所有的face_token
-	 * @return 操作结果
+	 * Removes face tokens from a FaceSet identified by its outer_id.
+	 *
+	 * @param outerId    the user-defined FaceSet identifier
+	 * @param faceTokens varargs of face tokens to remove
+	 * @return the remove response containing counts of removed faces
+	 * @throws IOException if the HTTP request fails
+	 * @see FaceppApiAddress#FACE_REMOVE
 	 */
 	public FaceRemoveResponse removeFaceByOuterId(String outerId, String ... faceTokens) throws IOException {
 		String reqUrl = FaceppApiAddress.FACE_REMOVE.getUrl();
@@ -249,12 +256,13 @@ public class FaceppFacesetOperations extends FaceppOperations {
 	}
 
 	/**
-	 * 1、人脸库中的人脸管理 > 自定义人脸信息 API
-	 * 为检测出的某一个人脸添加标识信息，该信息会在Search接口结果中返回，用来确定用户身份。
-	 * API：https://console.faceplusplus.com.cn/documents/4888387
-	 * @param faceToken 人脸标识face_token
-	 * @param userId 用户自定义的user_id，不超过255个字符，不能包括^@,&=*'"；建议将同一个人的多个face_token设置同样的user_id
-	 * @return 操作结果
+	 * Sets a user-defined user_id for a face token, used to identify the person in search results.
+	 *
+	 * @param faceToken the face token identifier
+	 * @param userId    the user-defined identifier (max 255 characters)
+	 * @return the response containing the face token and user_id
+	 * @throws IOException if the HTTP request fails
+	 * @see FaceppApiAddress#FACE_SET_USERID
 	 */
 	public FaceSetUserIdResponse createFace(String faceToken, String userId) throws IOException {
 		String reqUrl = FaceppApiAddress.FACE_SET_USERID.getUrl();
@@ -269,11 +277,12 @@ public class FaceppFacesetOperations extends FaceppOperations {
 	}
 
 	/**
-	 * 2、人脸库中的人脸管理 > 获取人脸信息 API
-	 * 通过传入在Detect API检测出的人脸标识face_token，获取一个人脸的关联信息，包括源图片ID、归属的FaceSet。
-	 * API：https://console.faceplusplus.com.cn/documents/4888385
-	 * @param faceToken 人脸标识face_token
-	 * @return 操作结果
+	 * Retrieves detailed information about a face, including source image ID and associated FaceSets.
+	 *
+	 * @param faceToken the face token identifier
+	 * @return the detail response containing face metadata
+	 * @throws IOException if the HTTP request fails
+	 * @see FaceppApiAddress#FACE_GET_DETAIL
 	 */
 	public FaceDetailResponse getFaceDetail(String faceToken) throws IOException {
 		String reqUrl = FaceppApiAddress.FACE_GET_DETAIL.getUrl();

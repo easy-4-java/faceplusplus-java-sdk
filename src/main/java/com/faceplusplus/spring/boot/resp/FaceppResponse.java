@@ -7,7 +7,14 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
 /**
- * 响应结果
+ * Base response class for all Face++ API responses.
+ * Contains common fields shared across all API endpoints: status code,
+ * time used, request ID, and error message.
+ *
+ * @author [@Loong Wan](https://github.com/loong10k)
+ * @since 3.0.0
+ * @see FaceDetectResponse
+ * @see FaceCompareResponse
  */
 @Data
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -15,29 +22,36 @@ import lombok.Data;
 public class FaceppResponse {
 
 	/**
-	 * 响应状态码，200表示成功，非200表示失败
+	 * HTTP-like status code. 200 indicates success; non-200 indicates failure.
 	 */
 	@JsonProperty("code")
 	private int code;
 
 	/**
-	 * 整个请求所花费的时间，单位为毫秒。除非发生404（API_NOT_FOUND )或403 （AUTHORIZATION_ERROR）错误，此字段必定返回
+	 * Time consumed by the entire request, in milliseconds.
+	 * Always returned unless a 404 (API_NOT_FOUND) or 403 (AUTHORIZATION_ERROR) occurs.
 	 */
 	@JsonProperty("time_used")
 	private int timeUsed;
 
 	/**
-	 * 用于区分每一次请求的唯一的字符串。除非发生404（API_NOT_FOUND ) 或403 （AUTHORIZATION_ERROR）错误，此字段必定返回
+	 * Unique request identifier string for tracing each request.
+	 * Always returned unless a 404 or 403 error occurs.
 	 */
 	@JsonProperty("request_id")
 	private String requestId;
 
 	/**
-	 * 当请求失败时才会返回此字符串，具体返回内容见后续错误信息章节。否则此字段不存在
+	 * Error message returned when the request fails. Absent on success.
 	 */
 	@JsonProperty("error_message")
 	private String errorMsg;
 
+	/**
+	 * Returns whether this response indicates a successful request (code == 200).
+	 *
+	 * @return {@code true} if the request was successful, {@code false} otherwise
+	 */
 	public boolean isSuccess() {
 		return code == 200;
 	}

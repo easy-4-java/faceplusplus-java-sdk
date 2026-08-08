@@ -4,25 +4,28 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
+/**
+ * Summary information for a FaceSet, typically used in lists or nested within
+ * face detail responses. Contains the FaceSet token, tags, and outer_id.
+ *
+ * @author [@Loong Wan](https://github.com/loong10k)
+ * @since 3.0.0
+ * @see FaceDetailResponse
+ * @see FacesetListResponse.FacesetFetail
+ */
 @Data
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class FaceSetFetail {
 
-    /**
-     * FaceSet 的标识
-     */
+    /** FaceSet token identifier. */
     @JsonProperty("faceset_token")
     private String facesetToken;
 
-    /**
-     * FaceSet 自定义标签组成的字符串，用来对 FaceSet 分组。最长255个字符，多个 tag 用逗号分隔，每个 tag 不能包括字符^@,&=*'"
-     */
+    /** Comma-separated custom tags for grouping FaceSets. Max 255 characters. */
     @JsonProperty("tags")
     private String tags;
 
-    /**
-     * 用户自定义的 FaceSet 标识，如果未定义则返回值为空
-     */
+    /** User-defined FaceSet identifier. Empty if not defined. */
     @JsonProperty("outer_id")
     private String outerId;
 
