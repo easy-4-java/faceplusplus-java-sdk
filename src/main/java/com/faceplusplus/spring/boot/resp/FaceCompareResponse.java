@@ -25,6 +25,16 @@ import lombok.EqualsAndHashCode;
 
 import java.util.List;
 
+/**
+ * Response from the Face Compare API.
+ * Contains the comparison confidence score, reference thresholds,
+ * image identifiers, and detected face arrays for both input images.
+ *
+ * @author [@Loong Wan](https://github.com/loong10k)
+ * @since 3.0.0
+ * @see com.faceplusplus.spring.boot.FaceppFaceOperations#compareUrl(String, String)
+ * @see com.faceplusplus.spring.boot.FaceppFaceOperations#compareToken(String, String)
+ */
 @Data
 @EqualsAndHashCode(callSuper=false)
 @JsonInclude( JsonInclude.Include.NON_NULL)
@@ -32,49 +42,36 @@ import java.util.List;
 public class FaceCompareResponse extends FaceppResponse {
 
 	/**
-	 * 1、比对结果置信度，范围 [0,100]，小数点后3位有效数字，数字越大表示两个人脸越可能是同一个人。
-	 * 注：如果传入图片但图片中未检测到人脸，则无法进行比对，本字段不返回。
+	 * Comparison confidence score in the range [0,100], with 3 decimal places.
+	 * Higher values indicate a greater likelihood that the two faces belong to the same person.
+	 * Not returned if no face is detected in the input images.
 	 */
 	@JsonProperty("confidence")
 	private Float confidence;
 
 	/**
-	 * 2、一组用于参考的置信度阈值，包含以下三个字段。每个字段的值为一个 [0,100] 的浮点数，小数点后 3 位有效数字。
-	 *     1e-3：误识率为千分之一的置信度阈值；
-	 *     1e-4：误识率为万分之一的置信度阈值；
-	 *     1e-5：误识率为十万分之一的置信度阈值；
-	 * 如果置信值低于“千分之一”阈值则不建议认为是同一个人；如果置信值超过“十万分之一”阈值，则是同一个人的几率非常高。
-	 * 请注意：阈值不是静态的，每次比对返回的阈值不保证相同，所以没有持久化保存阈值的必要，更不要将当前调用返回的 confidence 与之前调用返回的阈值比较。
-	 * 注：如果传入图片但图片中未检测到人脸，则无法进行比对，本字段不返回。
+	 * Reference confidence thresholds for different false acceptance rates:
+	 * - 1e-3: threshold for 0.1% FAR
+	 * - 1e-4: threshold for 0.01% FAR
+	 * - 1e-5: threshold for 0.001% FAR
+	 * Not returned if no face is detected in the input images.
 	 */
 	@JsonProperty("thresholds")
 	private JSONObject thresholds;
 
-	/**
-	 * 3、通过 image_url1、image_file1 或 image_base64_1 传入的图片在系统中的标识。
-	 * 注：如果未传入图片，本字段不返回。
-	 */
+	/** System identifier for the first input image. Not returned if no image was provided. */
 	@JsonProperty("image_id1")
 	private String imageId1;
 
-	/**
-	 * 4、通过 image_url2、image_file2 或 image_base64_2 传入的图片在系统中的标识。
-	 * 注：如果未传入图片，本字段不返回。
-	 */
+	/** System identifier for the second input image. Not returned if no image was provided. */
 	@JsonProperty("image_id2")
 	private String imageId2;
 
-	/**
-	 * 5、通过 image_url1、image_file1 或 image_base64_1 传入的图片中检测出的人脸数组，采用数组中的第一个人脸进行人脸比对。
-	 * 注：如果未传入图片，本字段不返回。如果没有检测出人脸则为空数组
-	 */
+	/** Array of faces detected in the first image. Not returned if no image was provided. */
 	@JsonProperty("faces1")
 	private JSONArray faces1;
 
-	/**
-	 * 6、通过 image_url2、image_file2 或 image_base64_2 传入的图片中检测出的人脸数组，采用数组中的第一个人脸进行人脸比对。
-	 * 注：如果未传入图片，本字段不返回。如果没有检测出人脸则为空数组
-	 */
+	/** Array of faces detected in the second image. Not returned if no image was provided. */
 	@JsonProperty("faces2")
 	private JSONArray faces2;
 

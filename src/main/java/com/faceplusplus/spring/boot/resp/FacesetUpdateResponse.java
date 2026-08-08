@@ -21,21 +21,25 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+/**
+ * Response from the FaceSet Update API.
+ * Confirms the update of a FaceSet by returning its token and outer_id.
+ *
+ * @author [@Loong Wan](https://github.com/loong10k)
+ * @since 3.0.0
+ * @see com.faceplusplus.spring.boot.FaceppFacesetOperations#updateFaceset(com.faceplusplus.spring.boot.req.FacesetUpdateBo)
+ */
 @Data
 @EqualsAndHashCode(callSuper=false)
 @JsonInclude( JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = false)
 public class FacesetUpdateResponse extends FaceppResponse {
 
-	/**
-	 * 1、FaceSet 的标识
-	 */
+	/** FaceSet token identifier. */
 	@JsonProperty("faceset_token")
 	private String facesetToken;
 
-	/**
-	 * 2、用户自定义的 FaceSet 标识，如果未定义则返回值为空
-	 */
+	/** User-defined FaceSet identifier. Empty if not defined. */
 	@JsonProperty("outer_id")
 	private String outerId;
 

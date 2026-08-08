@@ -23,35 +23,33 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+/**
+ * Response from the Skin Analyze API.
+ * Contains the face rectangle, skin analysis results, and any warning factors
+ * that may have affected the analysis accuracy.
+ *
+ * @author [@Loong Wan](https://github.com/loong10k)
+ * @since 3.0.0
+ * @see com.faceplusplus.spring.boot.FaceppFaceOperations#skinAnalyzeUrl(String, com.faceplusplus.spring.boot.req.SkinAnalyzeType, com.faceplusplus.spring.boot.req.SkinAnalyzeOptions)
+ */
 @Data
 @EqualsAndHashCode(callSuper=false)
 @JsonInclude( JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = false)
 public class FaceSkinAnalyzeResponse extends FaceppResponse {
 
-	/**
-	 * 1、人脸矩形框，坐标数字为整数，代表像素点坐标
-	 * top：矩形框左上角像素点的纵坐标
-	 * left：矩形框左上角像素点的横坐标
-	 * width：矩形框的宽度
-	 * height：矩形框的高度
-	 */
+	/** Bounding rectangle of the detected face in the image. */
 	@JsonProperty("face_rectangle")
 	private FaceRectangle faceRectangle;
 
-	/**
-	 * 2、人脸皮肤分析的结果，具体包含的返回值信息见下表
-	 * https://console.faceplusplus.com.cn/documents/307316314
-	 */
+	/** Skin analysis result object containing all detected skin metrics. */
 	@JsonProperty("result")
 	private JSONObject result;
 
 	/**
-	 * 3、表示影响计算结果的干扰因素.
-	 * 干扰因素可能有:
-	 *     imporper_headpose：头部角度不当 (判断条件roll,yaw,pitch超过[-45,45])
-	 * 当有影响因素存在时返回（有影响即返回相应字段）：["improper_headpose"]
-	 * 无影响因素的返回：[]
+	 * Array of warning factors that may have affected analysis accuracy.
+	 * Possible values: "improper_headpose" (roll/yaw/pitch outside [-45,45] range).
+	 * Empty array if no warnings.
 	 */
 	@JsonProperty("warning")
 	private JSONArray warning;

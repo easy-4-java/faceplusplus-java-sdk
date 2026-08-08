@@ -23,6 +23,16 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+/**
+ * Response from the Face Search API.
+ * Contains matching face results, reference confidence thresholds,
+ * the image identifier, and the detected face array.
+ *
+ * @author [@Loong Wan](https://github.com/loong10k)
+ * @since 3.0.0
+ * @see com.faceplusplus.spring.boot.FaceppFaceOperations#searchUrl(String, com.faceplusplus.spring.boot.req.FaceSearchOptions)
+ * @see com.faceplusplus.spring.boot.FaceppFaceOperations#searchToken(String, com.faceplusplus.spring.boot.req.FaceSearchOptions)
+ */
 @Data
 @EqualsAndHashCode(callSuper=false)
 @JsonInclude( JsonInclude.Include.NON_NULL)
@@ -30,35 +40,27 @@ import lombok.EqualsAndHashCode;
 public class FaceSearchResponse extends FaceppResponse {
 
 	/**
-	 * 1、搜索结果对象数组
-	 * 注：如果传入图片但图片中未检测到人脸，则无法进行人脸搜索，本字段不返回。
+	 * Array of search result objects, each containing a matched face token and confidence.
+	 * Not returned if no face is detected in the input image.
 	 */
 	@JsonProperty("results")
 	private JSONArray results;
 
 	/**
-	 * 2、一组用于参考的置信度阈值，包含以下三个字段。每个字段的值为一个 [0,100] 的浮点数，小数点后 3 位有效数字。
-	 *     1e-3：误识率为千分之一的置信度阈值；
-	 *     1e-4：误识率为万分之一的置信度阈值；
-	 *     1e-5：误识率为十万分之一的置信度阈值；
-	 * 如果置信值低于“千分之一”阈值则不建议认为是同一个人；如果置信值超过“十万分之一”阈值，则是同一个人的几率非常高。
-	 * 请注意：阈值不是静态的，每次比对返回的阈值不保证相同，所以没有持久化保存阈值的必要，更不要将当前调用返回的 confidence 与之前调用返回的阈值比较。
-	 * 注：如果传入图片但图片中未检测到人脸，则无法进行比对，本字段不返回。
+	 * Reference confidence thresholds for different false acceptance rates:
+	 * - 1e-3: threshold for 0.1% FAR
+	 * - 1e-4: threshold for 0.01% FAR
+	 * - 1e-5: threshold for 0.001% FAR
+	 * Not returned if no face is detected in the input image.
 	 */
 	@JsonProperty("thresholds")
 	private JSONObject thresholds;
 
-	/**
-	 * 3、通过 image_url、image_file 或 image_base64_ 传入的图片在系统中的标识。
-	 * 注：如果未传入图片，本字段不返回。
-	 */
+	/** System identifier for the input image. Not returned if no image was provided. */
 	@JsonProperty("image_id")
 	private String imageId;
 
-	/**
-	 * 4、传入的图片中检测出的人脸数组，采用数组中的第一个人脸进行人脸搜索。
-	 * 注：如果未传入图片，本字段不返回。如果没有检测出人脸则为空数组
-	 */
+	/** Array of faces detected in the input image. Not returned if no image was provided. */
 	@JsonProperty("faces")
 	private JSONArray faces;
 

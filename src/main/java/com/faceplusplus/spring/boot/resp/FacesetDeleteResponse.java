@@ -21,21 +21,25 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+/**
+ * Response from the FaceSet Delete API.
+ * Confirms the deletion of a FaceSet by returning its token and outer_id.
+ *
+ * @author [@Loong Wan](https://github.com/loong10k)
+ * @since 3.0.0
+ * @see com.faceplusplus.spring.boot.FaceppFacesetOperations#deleteFaceset(com.faceplusplus.spring.boot.req.FacesetDeleteBo)
+ */
 @Data
 @EqualsAndHashCode(callSuper=false)
 @JsonInclude( JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = false)
 public class FacesetDeleteResponse extends FaceppResponse {
 
-	/**
-	 * 1、FaceSet 的标识
-	 */
+	/** FaceSet token identifier of the deleted FaceSet. */
 	@JsonProperty("faceset_token")
 	private String facesetToken;
 
-	/**
-	 * 2、用户自定义的 FaceSet 标识，如果未定义则返回值为空
-	 */
+	/** User-defined FaceSet identifier of the deleted FaceSet. Empty if not defined. */
 	@JsonProperty("outer_id")
 	private String outerId;
 

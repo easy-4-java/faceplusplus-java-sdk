@@ -25,28 +25,30 @@ import lombok.EqualsAndHashCode;
 
 import java.util.List;
 
+/**
+ * Response from the Face Analyze API.
+ * Contains the image identifier, analyzed face count, and an array of face objects
+ * with their attributes and landmarks.
+ *
+ * @author [@Loong Wan](https://github.com/loong10k)
+ * @since 3.0.0
+ * @see com.faceplusplus.spring.boot.FaceppFaceOperations#analyze(String[], com.faceplusplus.spring.boot.req.FaceAnalyzeOptions)
+ */
 @Data
 @EqualsAndHashCode(callSuper=false)
 @JsonInclude( JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = false)
 public class FaceAnalyzeResponse extends FaceppResponse {
 
-	/**
-	 * 1、被检测的图片在系统中的标识
-	 */
+	/** Unique identifier of the analyzed image in the system. */
 	@JsonProperty("image_id")
 	private String imageId;
 
-	/**
-	 * 2、检测出的人脸个数
-	 */
+	/** Number of faces detected in the image. */
 	@JsonProperty("face_num")
 	private Integer faceNum;
 
-	/**
-	 * 3、被检测出的人脸数组，具体包含内容见下文。
-	 * 注：如果没有检测出人脸则为空数组
-	 */
+	/** Array of analyzed face objects with attributes and landmarks. Empty if no faces detected. */
 	@JsonProperty("faces")
 	private JSONArray faces;
 

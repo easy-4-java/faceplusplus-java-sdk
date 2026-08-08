@@ -1,5 +1,35 @@
 package com.faceplusplus.spring.boot;
 
+/**
+ * Enumeration of HTTP request methods supported by the Face++ SDK.
+ *
+ * @author [@Loong Wan](https://github.com/loong10k)
+ * @since 3.0.0
+ * @see FaceppApiAddress
+ */
 public enum RequestMethod {
-    GET, HEAD, POST, PUT, PATCH, DELETE, OPTIONS, TRACE
+
+    /** HTTP GET method. */
+    GET,
+
+    /** HTTP HEAD method. */
+    HEAD,
+
+    /** HTTP POST method. */
+    POST,
+
+    /** HTTP PUT method. */
+    PUT,
+
+    /** HTTP PATCH method. */
+    PATCH,
+
+    /** HTTP DELETE method. */
+    DELETE,
+
+    /** HTTP OPTIONS method. */
+    OPTIONS,
+
+    /** HTTP TRACE method. */
+    TRACE
 }
