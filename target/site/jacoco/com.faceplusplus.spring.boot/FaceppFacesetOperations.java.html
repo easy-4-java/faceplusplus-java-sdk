@@ -1,0 +1,300 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>FaceppFacesetOperations.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">io.github.easy4j:faceplusplus-java-sdk</a> &gt; <a href="index.source.html" class="el_package">com.faceplusplus.spring.boot</a> &gt; <span class="el_source">FaceppFacesetOperations.java</span></div><h1>FaceppFacesetOperations.java</h1><pre class="source lang-java linenums">/*
+ * Copyright (c) 2018, Loong Wan (https://github.com/loong10k).
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;); you may not
+ * use this file except in compliance with the License. You may obtain a copy of
+ * the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
+ */
+package com.faceplusplus.spring.boot;
+
+import com.faceplusplus.spring.boot.req.FacesetBo;
+import com.faceplusplus.spring.boot.req.FacesetDeleteBo;
+import com.faceplusplus.spring.boot.req.FacesetUpdateBo;
+import com.faceplusplus.spring.boot.resp.*;
+import com.google.common.collect.ImmutableMap;
+
+import java.io.IOException;
+import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+/**
+ * Synchronous operations for FaceSet management, including create, delete, update,
+ * list, and face token add/remove operations, as well as face information management.
+ *
+ * @author [@Loong Wan](https://github.com/loong10k)
+ * @since 3.0.0
+ * @see FaceppFacesetAsyncOperations
+ * @see FaceppApiAddress
+ */
+public class FaceppFacesetOperations extends FaceppOperations {
+
+	/**
+	 * Constructs a new {@code FaceppFacesetOperations} bound to the given template.
+	 *
+	 * @param faceppTemplate the template providing access to SDK configuration and HTTP client
+	 */
+	public FaceppFacesetOperations(FaceppTemplate faceppTemplate) {
+<span class="fc" id="L46">		super(faceppTemplate);</span>
+<span class="fc" id="L47">	}</span>
+
+	/**
+	 * Creates a new FaceSet for storing face tokens.
+	 *
+	 * @param faceset the FaceSet creation parameters
+	 * @return the creation response containing the new FaceSet token
+	 * @throws IOException if the HTTP request fails
+	 * @see FaceppApiAddress#FACESET_CREATE
+	 */
+	public FacesetCreateResponse createFaceset(FacesetBo faceset) throws IOException {
+<span class="fc" id="L58">		String reqUrl = FaceppApiAddress.FACESET_CREATE.getUrl();</span>
+<span class="fc" id="L59">		Map&lt;String, Object&gt; params = new ImmutableMap.Builder&lt;String, Object&gt;()</span>
+<span class="fc" id="L60">				.put(&quot;api_key&quot;, getFaceppProperties().getAppId())</span>
+<span class="fc" id="L61">				.put(&quot;api_secret&quot;, getFaceppProperties().getAppCertificate())</span>
+<span class="fc" id="L62">				.putAll(getObjectMapper().readValue(getObjectMapper().writeValueAsString(faceset), Map.class))</span>
+<span class="fc" id="L63">				.build();</span>
+<span class="fc" id="L64">		FacesetCreateResponse resp = getFaceppOkHttp3Template().post(reqUrl, null, params, FacesetCreateResponse.class);</span>
+<span class="fc" id="L65">		return resp;</span>
+	}
+
+	/**
+	 * Deletes a FaceSet.
+	 *
+	 * @param faceset the FaceSet deletion parameters (token or outer_id)
+	 * @return the deletion response
+	 * @throws IOException if the HTTP request fails
+	 * @see FaceppApiAddress#FACESET_DELETE
+	 */
+	public FacesetCreateResponse deleteFaceset(FacesetDeleteBo faceset) throws IOException {
+<span class="fc" id="L77">		String reqUrl = FaceppApiAddress.FACESET_DELETE.getUrl();</span>
+<span class="fc" id="L78">		Map&lt;String, Object&gt; params = new ImmutableMap.Builder&lt;String, Object&gt;()</span>
+<span class="fc" id="L79">				.put(&quot;api_key&quot;, getFaceppProperties().getAppId())</span>
+<span class="fc" id="L80">				.put(&quot;api_secret&quot;, getFaceppProperties().getAppCertificate())</span>
+<span class="fc" id="L81">				.putAll(getObjectMapper().readValue(getObjectMapper().writeValueAsString(faceset), Map.class))</span>
+<span class="fc" id="L82">				.build();</span>
+<span class="fc" id="L83">		FacesetCreateResponse resp = getFaceppOkHttp3Template().post(reqUrl, null, params,  FacesetCreateResponse.class);</span>
+<span class="fc" id="L84">		return resp;</span>
+	}
+
+	/**
+	 * Updates the attributes of a FaceSet (display name, tags, user data, etc.).
+	 *
+	 * @param faceset the FaceSet update parameters
+	 * @return the update response
+	 * @throws IOException if the HTTP request fails
+	 * @see FaceppApiAddress#FACESET_UPDATE
+	 */
+	public FacesetCreateResponse updateFaceset(FacesetUpdateBo faceset) throws IOException {
+<span class="fc" id="L96">		String reqUrl = FaceppApiAddress.FACESET_UPDATE.getUrl();</span>
+<span class="fc" id="L97">		Map&lt;String, Object&gt; params = new ImmutableMap.Builder&lt;String, Object&gt;()</span>
+<span class="fc" id="L98">				.put(&quot;api_key&quot;, getFaceppProperties().getAppId())</span>
+<span class="fc" id="L99">				.put(&quot;api_secret&quot;, getFaceppProperties().getAppCertificate())</span>
+<span class="fc" id="L100">				.putAll(getObjectMapper().readValue(getObjectMapper().writeValueAsString(faceset), Map.class))</span>
+<span class="fc" id="L101">				.build();</span>
+<span class="fc" id="L102">		FacesetCreateResponse resp = getFaceppOkHttp3Template().post(reqUrl, null, params,  FacesetCreateResponse.class);</span>
+<span class="fc" id="L103">		return resp;</span>
+	}
+
+	/**
+	 * Retrieves the list of FaceSets under the current API key.
+	 *
+	 * @param lastSequence the starting sequence number for pagination
+	 * @param tags         optional tags to filter FaceSets
+	 * @return the list response containing FaceSet metadata
+	 * @throws IOException if the HTTP request fails
+	 * @see FaceppApiAddress#FACESET_LIST
+	 */
+	public FacesetListResponse getFacesetList(int lastSequence, String... tags) throws IOException {
+<span class="fc" id="L116">		String reqUrl = FaceppApiAddress.FACESET_LIST.getUrl();</span>
+<span class="fc" id="L117">		ImmutableMap.Builder builder = new ImmutableMap.Builder&lt;String, Object&gt;()</span>
+<span class="fc" id="L118">				.put(&quot;api_key&quot;, getFaceppProperties().getAppId())</span>
+<span class="fc" id="L119">				.put(&quot;api_secret&quot;, getFaceppProperties().getAppCertificate())</span>
+<span class="fc" id="L120">				.put(&quot;start&quot;, lastSequence);</span>
+<span class="fc bfc" id="L121" title="All 4 branches covered.">		if(tags != null &amp;&amp; tags.length &gt; 0){</span>
+<span class="fc bfc" id="L122" title="All 2 branches covered.">			if(tags.length == 1){</span>
+<span class="fc" id="L123">				builder.put(&quot;tags&quot;, tags[0]);</span>
+			} else {
+<span class="fc" id="L125">				builder.put(&quot;tags&quot;, Stream.of(tags).collect(Collectors.joining(&quot;, &quot;)));</span>
+			}
+		}
+<span class="fc" id="L128">		FacesetListResponse resp = getFaceppOkHttp3Template().post(reqUrl, null, builder.build(),  FacesetListResponse.class);</span>
+<span class="fc" id="L129">		return resp;</span>
+	}
+
+	/**
+	 * Retrieves detailed information of a FaceSet identified by its token.
+	 *
+	 * @param facesetToken  the FaceSet identifier
+	 * @param lastSequence  the starting sequence number for pagination
+	 * @return the detail response containing FaceSet information and face tokens
+	 * @throws IOException if the HTTP request fails
+	 * @see FaceppApiAddress#FACESET_LIST
+	 */
+	public FacesetDetailResponse getFacesetByToken(String facesetToken, int lastSequence) throws IOException {
+<span class="fc" id="L142">		String reqUrl = FaceppApiAddress.FACESET_LIST.getUrl();</span>
+<span class="fc" id="L143">		Map&lt;String, Object&gt; params = new ImmutableMap.Builder&lt;String, Object&gt;()</span>
+<span class="fc" id="L144">				.put(&quot;api_key&quot;, getFaceppProperties().getAppId())</span>
+<span class="fc" id="L145">				.put(&quot;api_secret&quot;, getFaceppProperties().getAppCertificate())</span>
+<span class="fc" id="L146">				.put(&quot;faceset_token&quot;, facesetToken)</span>
+<span class="fc" id="L147">				.put(&quot;start&quot;, lastSequence)</span>
+<span class="fc" id="L148">				.build();</span>
+<span class="fc" id="L149">		FacesetDetailResponse resp = getFaceppOkHttp3Template().post(reqUrl, null, params,  FacesetDetailResponse.class);</span>
+<span class="fc" id="L150">		return resp;</span>
+	}
+
+	/**
+	 * Retrieves detailed information of a FaceSet identified by its outer_id.
+	 *
+	 * @param outerId       the user-defined FaceSet identifier
+	 * @param lastSequence  the starting sequence number for pagination
+	 * @return the detail response containing FaceSet information and face tokens
+	 * @throws IOException if the HTTP request fails
+	 * @see FaceppApiAddress#FACESET_DETAIL
+	 */
+	public FacesetDetailResponse getFacesetByOuterId(String outerId, int lastSequence) throws IOException {
+<span class="fc" id="L163">		String reqUrl = FaceppApiAddress.FACESET_DETAIL.getUrl();</span>
+<span class="fc" id="L164">		Map&lt;String, Object&gt; params = new ImmutableMap.Builder&lt;String, Object&gt;()</span>
+<span class="fc" id="L165">				.put(&quot;api_key&quot;, getFaceppProperties().getAppId())</span>
+<span class="fc" id="L166">				.put(&quot;api_secret&quot;, getFaceppProperties().getAppCertificate())</span>
+<span class="fc" id="L167">				.put(&quot;outer_id&quot;, outerId)</span>
+<span class="fc" id="L168">				.put(&quot;start&quot;, lastSequence)</span>
+<span class="fc" id="L169">				.build();</span>
+<span class="fc" id="L170">		FacesetDetailResponse resp = getFaceppOkHttp3Template().post(reqUrl, null, params,  FacesetDetailResponse.class);</span>
+<span class="fc" id="L171">		return resp;</span>
+	}
+
+	/**
+	 * Adds face tokens to a FaceSet identified by its token.
+	 *
+	 * @param facesetToken the FaceSet identifier
+	 * @param faceTokens   varargs of face tokens to add (max 5)
+	 * @return the add response containing counts of added faces
+	 * @throws IOException if the HTTP request fails
+	 * @see FaceppApiAddress#FACE_ADD
+	 */
+	public FaceAddResponse addFaceWithToken(String facesetToken, String ... faceTokens) throws IOException {
+<span class="fc" id="L184">		String reqUrl = FaceppApiAddress.FACE_ADD.getUrl();</span>
+<span class="fc" id="L185">		Map&lt;String, Object&gt; params = new ImmutableMap.Builder&lt;String, Object&gt;()</span>
+<span class="fc" id="L186">				.put(&quot;api_key&quot;, getFaceppProperties().getAppId())</span>
+<span class="fc" id="L187">				.put(&quot;api_secret&quot;, getFaceppProperties().getAppCertificate())</span>
+<span class="fc" id="L188">				.put(&quot;faceset_token&quot;, facesetToken)</span>
+<span class="fc" id="L189">				.put(&quot;face_tokens&quot;, faceTokens)</span>
+<span class="fc" id="L190">				.build();</span>
+<span class="fc" id="L191">		FaceAddResponse resp = getFaceppOkHttp3Template().post(reqUrl, null, params,  FaceAddResponse.class);</span>
+<span class="fc" id="L192">		return resp;</span>
+	}
+
+	/**
+	 * Adds face tokens to a FaceSet identified by its outer_id.
+	 *
+	 * @param outerId    the user-defined FaceSet identifier
+	 * @param faceTokens varargs of face tokens to add (max 5)
+	 * @return the add response containing counts of added faces
+	 * @throws IOException if the HTTP request fails
+	 * @see FaceppApiAddress#FACE_ADD
+	 */
+	public FaceAddResponse addFaceWithOuterId(String outerId, String ... faceTokens) throws IOException {
+<span class="fc" id="L205">		String reqUrl = FaceppApiAddress.FACE_ADD.getUrl();</span>
+<span class="fc" id="L206">		Map&lt;String, Object&gt; params = new ImmutableMap.Builder&lt;String, Object&gt;()</span>
+<span class="fc" id="L207">				.put(&quot;api_key&quot;, getFaceppProperties().getAppId())</span>
+<span class="fc" id="L208">				.put(&quot;api_secret&quot;, getFaceppProperties().getAppCertificate())</span>
+<span class="fc" id="L209">				.put(&quot;outer_id&quot;, outerId)</span>
+<span class="fc" id="L210">				.put(&quot;face_tokens&quot;, faceTokens)</span>
+<span class="fc" id="L211">				.build();</span>
+<span class="fc" id="L212">		FaceAddResponse resp = getFaceppOkHttp3Template().post(reqUrl, null, params,  FaceAddResponse.class);</span>
+<span class="fc" id="L213">		return resp;</span>
+	}
+
+	/**
+	 * Removes face tokens from a FaceSet identified by its token.
+	 *
+	 * @param facesetToken the FaceSet identifier
+	 * @param faceTokens   varargs of face tokens to remove
+	 * @return the remove response containing counts of removed faces
+	 * @throws IOException if the HTTP request fails
+	 * @see FaceppApiAddress#FACE_REMOVE
+	 */
+	public FaceRemoveResponse removeFaceByToken(String facesetToken, String ... faceTokens) throws IOException {
+<span class="fc" id="L226">		String reqUrl = FaceppApiAddress.FACE_REMOVE.getUrl();</span>
+<span class="fc" id="L227">		Map&lt;String, Object&gt; params = new ImmutableMap.Builder&lt;String, Object&gt;()</span>
+<span class="fc" id="L228">				.put(&quot;api_key&quot;, getFaceppProperties().getAppId())</span>
+<span class="fc" id="L229">				.put(&quot;api_secret&quot;, getFaceppProperties().getAppCertificate())</span>
+<span class="fc" id="L230">				.put(&quot;faceset_token&quot;, facesetToken)</span>
+<span class="fc" id="L231">				.put(&quot;face_tokens&quot;, faceTokens)</span>
+<span class="fc" id="L232">				.build();</span>
+<span class="fc" id="L233">		FaceRemoveResponse resp = getFaceppOkHttp3Template().post(reqUrl, null, params,  FaceRemoveResponse.class);</span>
+<span class="fc" id="L234">		return resp;</span>
+	}
+
+	/**
+	 * Removes face tokens from a FaceSet identified by its outer_id.
+	 *
+	 * @param outerId    the user-defined FaceSet identifier
+	 * @param faceTokens varargs of face tokens to remove
+	 * @return the remove response containing counts of removed faces
+	 * @throws IOException if the HTTP request fails
+	 * @see FaceppApiAddress#FACE_REMOVE
+	 */
+	public FaceRemoveResponse removeFaceByOuterId(String outerId, String ... faceTokens) throws IOException {
+<span class="fc" id="L247">		String reqUrl = FaceppApiAddress.FACE_REMOVE.getUrl();</span>
+<span class="fc" id="L248">		Map&lt;String, Object&gt; params = new ImmutableMap.Builder&lt;String, Object&gt;()</span>
+<span class="fc" id="L249">				.put(&quot;api_key&quot;, getFaceppProperties().getAppId())</span>
+<span class="fc" id="L250">				.put(&quot;api_secret&quot;, getFaceppProperties().getAppCertificate())</span>
+<span class="fc" id="L251">				.put(&quot;outer_id&quot;, outerId)</span>
+<span class="fc" id="L252">				.put(&quot;face_tokens&quot;, faceTokens)</span>
+<span class="fc" id="L253">				.build();</span>
+<span class="fc" id="L254">		FaceRemoveResponse resp = getFaceppOkHttp3Template().post(reqUrl, null, params,  FaceRemoveResponse.class);</span>
+<span class="fc" id="L255">		return resp;</span>
+	}
+
+	/**
+	 * Sets a user-defined user_id for a face token, used to identify the person in search results.
+	 *
+	 * @param faceToken the face token identifier
+	 * @param userId    the user-defined identifier (max 255 characters)
+	 * @return the response containing the face token and user_id
+	 * @throws IOException if the HTTP request fails
+	 * @see FaceppApiAddress#FACE_SET_USERID
+	 */
+	public FaceSetUserIdResponse createFace(String faceToken, String userId) throws IOException {
+<span class="fc" id="L268">		String reqUrl = FaceppApiAddress.FACE_SET_USERID.getUrl();</span>
+<span class="fc" id="L269">		Map&lt;String, Object&gt; params = new ImmutableMap.Builder&lt;String, Object&gt;()</span>
+<span class="fc" id="L270">				.put(&quot;api_key&quot;, getFaceppProperties().getAppId())</span>
+<span class="fc" id="L271">				.put(&quot;api_secret&quot;, getFaceppProperties().getAppCertificate())</span>
+<span class="fc" id="L272">				.put(&quot;user_id&quot;, userId)</span>
+<span class="fc" id="L273">				.put(&quot;face_token&quot;, faceToken)</span>
+<span class="fc" id="L274">				.build();</span>
+<span class="fc" id="L275">		FaceSetUserIdResponse resp = getFaceppOkHttp3Template().post(reqUrl, null, params, FaceSetUserIdResponse.class);</span>
+<span class="fc" id="L276">		return resp;</span>
+	}
+
+	/**
+	 * Retrieves detailed information about a face, including source image ID and associated FaceSets.
+	 *
+	 * @param faceToken the face token identifier
+	 * @return the detail response containing face metadata
+	 * @throws IOException if the HTTP request fails
+	 * @see FaceppApiAddress#FACE_GET_DETAIL
+	 */
+	public FaceDetailResponse getFaceDetail(String faceToken) throws IOException {
+<span class="fc" id="L288">		String reqUrl = FaceppApiAddress.FACE_GET_DETAIL.getUrl();</span>
+<span class="fc" id="L289">		Map&lt;String, Object&gt; params = new ImmutableMap.Builder&lt;String, Object&gt;()</span>
+<span class="fc" id="L290">				.put(&quot;api_key&quot;, getFaceppProperties().getAppId())</span>
+<span class="fc" id="L291">				.put(&quot;api_secret&quot;, getFaceppProperties().getAppCertificate())</span>
+<span class="fc" id="L292">				.put(&quot;face_token&quot;, faceToken)</span>
+<span class="fc" id="L293">				.build();</span>
+<span class="fc" id="L294">		FaceDetailResponse resp = getFaceppOkHttp3Template().post(reqUrl, null, params,  FaceDetailResponse.class);</span>
+<span class="fc" id="L295">		return resp;</span>
+	}
+
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.15.202606040825</span></div></body></html>

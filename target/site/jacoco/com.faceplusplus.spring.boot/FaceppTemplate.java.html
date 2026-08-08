@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>FaceppTemplate.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">io.github.easy4j:faceplusplus-java-sdk</a> &gt; <a href="index.source.html" class="el_package">com.faceplusplus.spring.boot</a> &gt; <span class="el_source">FaceppTemplate.java</span></div><h1>FaceppTemplate.java</h1><pre class="source lang-java linenums">package com.faceplusplus.spring.boot;
+
+import lombok.extern.slf4j.Slf4j;
+
+/**
+ * Main entry point for the Face++ SDK.
+ * Provides access to face detection/analysis operations and FaceSet management operations.
+ *
+ * @author [@Loong Wan](https://github.com/loong10k)
+ * @since 3.0.0
+ * @see FaceppFaceAsyncOperations
+ * @see FaceppFacesetAsyncOperations
+ */
+<span class="fc" id="L14">@Slf4j</span>
+public class FaceppTemplate {
+
+	private FaceppOkHttp3Template faceppOkHttp3Template;
+	private FaceppProperties faceppProperties;
+
+<span class="fc" id="L20">	private final FaceppFacesetAsyncOperations facesetOps = new FaceppFacesetAsyncOperations(this);</span>
+<span class="fc" id="L21">	private final FaceppFaceAsyncOperations faceDetectOps = new FaceppFaceAsyncOperations(this);</span>
+
+	/**
+	 * Constructs a new {@code FaceppTemplate} with the given HTTP template and properties.
+	 *
+	 * @param faceppOkHttp3Template the OkHttp3 template for HTTP communication
+	 * @param faceppProperties the Face++ configuration properties
+	 */
+<span class="fc" id="L29">	public FaceppTemplate(FaceppOkHttp3Template faceppOkHttp3Template, FaceppProperties faceppProperties) {</span>
+<span class="fc" id="L30">		this.faceppOkHttp3Template = faceppOkHttp3Template;</span>
+<span class="fc" id="L31">		this.faceppProperties = faceppProperties;</span>
+<span class="fc" id="L32">	}</span>
+
+	/**
+	 * Returns the operations interface for FaceSet management (create, delete, update, add/remove faces).
+	 *
+	 * @return the {@link FaceppFacesetAsyncOperations} instance
+	 */
+	public FaceppFacesetAsyncOperations opsForFaceset() {
+<span class="fc" id="L40">		return facesetOps;</span>
+	}
+
+	/**
+	 * Returns the operations interface for face detection, analysis, comparison, search, and skin analysis.
+	 *
+	 * @return the {@link FaceppFaceAsyncOperations} instance
+	 */
+	public FaceppFaceAsyncOperations opsForFaceDetect() {
+<span class="fc" id="L49">		return faceDetectOps;</span>
+	}
+
+	/**
+	 * Returns the Face++ configuration properties.
+	 *
+	 * @return the {@link FaceppProperties} instance
+	 */
+	public FaceppProperties getFaceppProperties() {
+<span class="fc" id="L58">		return faceppProperties;</span>
+	}
+
+	/**
+	 * Returns the OkHttp3 template used for HTTP communication.
+	 *
+	 * @return the {@link FaceppOkHttp3Template} instance
+	 */
+	public FaceppOkHttp3Template getFaceppOkHttp3Template() {
+<span class="fc" id="L67">		return faceppOkHttp3Template;</span>
+	}
+
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.15.202606040825</span></div></body></html>

@@ -1,0 +1,259 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>FaceppApiAddress.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">io.github.easy4j:faceplusplus-java-sdk</a> &gt; <a href="index.source.html" class="el_package">com.faceplusplus.spring.boot</a> &gt; <span class="el_source">FaceppApiAddress.java</span></div><h1>FaceppApiAddress.java</h1><pre class="source lang-java linenums">package com.faceplusplus.spring.boot;
+
+import java.text.MessageFormat;
+
+/**
+ * Enumeration of all Face++ API endpoint addresses.
+ * Each constant holds a human-readable description, the HTTP method, and the URL template.
+ * URL templates may contain {@code {0}}, {@code {1}}, etc. placeholders that are resolved
+ * via {@link #getUrl(Object...)}.
+ *
+ * @author [@Loong Wan](https://github.com/loong10k)
+ * @since 3.0.0
+ * @see FaceppFaceOperations
+ * @see FaceppFacesetOperations
+ */
+<span class="fc" id="L16">public enum FaceppApiAddress {</span>
+
+	// ---------------- Face Recognition APIs ------------------
+
+	/**
+	 * Face Detect API - detects faces in an image and returns face tokens.
+	 */
+<span class="fc" id="L23">	ACQUIRE_RESOURCE_ID(&quot;Face Detect API&quot;, RequestMethod.POST,&quot;/facepp/v3/detect&quot;),</span>
+
+	/**
+	 * Face Analyze API - analyzes facial attributes and landmarks.
+	 */
+<span class="fc" id="L28">	START_CLOUD_RECORDING(&quot;Face Analyze API&quot;, RequestMethod.POST,&quot;https://api.agora.io/v1/apps/{0}/cloud_recording/resourceid/{1}/mode/{2}/start&quot;),</span>
+
+	/**
+	 * Dense Landmark API - returns dense facial landmark points.
+	 */
+<span class="fc" id="L33">	UPDATE_CLOUD_RECORDING(&quot;Dense Landmark API&quot;, RequestMethod.POST,&quot;https://api.agora.io/v1/apps/{0}/cloud_recording/resourceid/{1}/sid/{2}/mode/{3}/updateLayout&quot;),</span>
+
+	/**
+	 * Face Compare API - compares two faces for similarity.
+	 */
+<span class="fc" id="L38">	UPDATE_CLOUD_RECORDING_LAYOUT(&quot;Face Compare API&quot;, RequestMethod.POST,&quot;https://api.agora.io/v1/apps/{0}/cloud_recording/resourceid/{1}/sid/{2}/mode/{3}/update&quot;),</span>
+
+	/**
+	 * Query cloud recording status.
+	 */
+<span class="fc" id="L43">	QUERY_CLOUD_RECORDING(&quot;Query Cloud Recording Status&quot;, RequestMethod.POST,&quot;https://api.agora.io/v1/apps/{0}/cloud_recording/resourceid/{1}/sid/{2}/mode/{3}/query&quot;),</span>
+
+	/**
+	 * Stop cloud recording.
+	 */
+<span class="fc" id="L48">	STOP_CLOUD_RECORDING(&quot;Stop Cloud Recording&quot;, RequestMethod.POST,&quot;https://api.agora.io/v1/apps/{0}/cloud_recording/resourceid/{1}/sid/{2}/mode/{3}/stop&quot;),</span>
+
+	// ---------------- Project Management ------------------
+
+	/** Create a project. */
+<span class="fc" id="L53">	PROJECT_POST(&quot;Create Project&quot;, RequestMethod.POST,&quot;https://api.agora.io/v1/project&quot;),</span>
+
+	/** Get a specific project. */
+<span class="fc" id="L56">	PROJECT_GET(&quot;Get Project&quot;, RequestMethod.POST,&quot;https://api.agora.io/v1/project&quot;),</span>
+
+	/** Get all projects. */
+<span class="fc" id="L59">	PROJECTS_GET(&quot;Get All Projects&quot;, RequestMethod.POST,&quot;https://api.agora.io/v1/projects&quot;),</span>
+
+	/** Enable or disable a project. */
+<span class="fc" id="L62">	PROJECT_STATUS_POST(&quot;Enable/Disable Project&quot;, RequestMethod.POST,&quot;https://api.agora.io/v1/projects_status&quot;),</span>
+
+	/** Get usage data for a specific project. */
+<span class="fc" id="L65">	PROJECT_USAGE_GET(&quot;Get Project Usage&quot;, RequestMethod.POST,&quot;https://api.agora.io/v3/usage&quot;),</span>
+
+	/** Set recording server IP. */
+<span class="fc" id="L68">	RECORDING_CONFIG_POST(&quot;Set Recording Server IP&quot;, RequestMethod.POST,&quot;https://api.agora.io/v1/recording_config&quot;),</span>
+
+	/** Enable or disable the primary App certificate. */
+<span class="fc" id="L71">	SIGNKEY_POST(&quot;Enable/Disable Primary App Certificate&quot;, RequestMethod.POST,&quot;https://api.agora.io/v1/signkey&quot;),</span>
+
+	/** Reset the primary App certificate. */
+<span class="fc" id="L74">	SIGNKEY_RESET_POST(&quot;Reset Primary App Certificate&quot;, RequestMethod.POST,&quot;https://api.agora.io/v1/reset_signkey&quot;),</span>
+
+	// ---------------- User Ban Rules ------------------
+
+	/** Create a user ban rule. */
+<span class="fc" id="L79">	KICKING_RULE_POST(&quot;Create User Ban Rule&quot;, RequestMethod.POST,&quot;https://api.agora.io/v1/kicking-rule&quot;),</span>
+
+	/** Get the list of user ban rules. */
+<span class="fc" id="L82">	KICKING_RULE_GET(&quot;Get User Ban Rules&quot;, RequestMethod.POST,&quot;https://api.agora.io/v1/kicking-rule&quot;),</span>
+
+	/** Update the effective time of a user ban rule. */
+<span class="fc" id="L85">	KICKING_RULE_PUT(&quot;Update User Ban Rule&quot;, RequestMethod.POST,&quot;https://api.agora.io/v1/kicking-rule&quot;),</span>
+
+	/** Delete a user ban rule. */
+<span class="fc" id="L88">	KICKING_RULE_DELETE(&quot;Delete User Ban Rule&quot;, RequestMethod.POST,&quot;https://api.agora.io/v1/kicking-rule&quot;),</span>
+
+	// ---------------- FaceSet Management APIs ------------------
+
+	/**
+	 * Create a FaceSet - a collection for storing face tokens.
+	 * @see &lt;a href=&quot;https://console.faceplusplus.com.cn/documents/4888391&quot;&gt;API Documentation&lt;/a&gt;
+	 */
+<span class="fc" id="L96">	FACESET_CREATE(&quot;Create FaceSet&quot;, RequestMethod.POST,&quot;https://api-cn.faceplusplus.com/facepp/v3/faceset/create&quot;),</span>
+
+	/**
+	 * Delete a FaceSet.
+	 * @see &lt;a href=&quot;https://console.faceplusplus.com.cn/documents/4888393&quot;&gt;API Documentation&lt;/a&gt;
+	 */
+<span class="fc" id="L102">	FACESET_DELETE(&quot;Delete FaceSet&quot;, RequestMethod.POST,&quot;https://api-cn.faceplusplus.com/facepp/v3/faceset/delete&quot;),</span>
+
+	/**
+	 * Update FaceSet information.
+	 * @see &lt;a href=&quot;https://console.faceplusplus.com.cn/documents/4888401&quot;&gt;API Documentation&lt;/a&gt;
+	 */
+<span class="fc" id="L108">	FACESET_UPDATE(&quot;Update FaceSet&quot;, RequestMethod.POST,&quot;https://api-cn.faceplusplus.com/facepp/v3/faceset/update&quot;),</span>
+
+	/**
+	 * Get the list of FaceSets and their information.
+	 * @see &lt;a href=&quot;https://console.faceplusplus.com.cn/documents/4888397&quot;&gt;API Documentation&lt;/a&gt;
+	 */
+<span class="fc" id="L114">	FACESET_LIST(&quot;Get FaceSet List&quot;, RequestMethod.POST,&quot;https://api-cn.faceplusplus.com/facepp/v3/faceset/getfacesets&quot;),</span>
+
+	/**
+	 * Get detailed information of a FaceSet.
+	 * @see &lt;a href=&quot;https://console.faceplusplus.com.cn/documents/4888395&quot;&gt;API Documentation&lt;/a&gt;
+	 */
+<span class="fc" id="L120">	FACESET_DETAIL(&quot;Get FaceSet Detail&quot;, RequestMethod.POST,&quot;https://api-cn.faceplusplus.com/facepp/v3/faceset/getdetail&quot;),</span>
+
+	/**
+	 * Add face tokens to a FaceSet.
+	 * @see &lt;a href=&quot;https://console.faceplusplus.com.cn/documents/4888389&quot;&gt;API Documentation&lt;/a&gt;
+	 */
+<span class="fc" id="L126">	FACE_ADD(&quot;Add Face&quot;, RequestMethod.POST,&quot;https://api-cn.faceplusplus.com/facepp/v3/faceset/addface&quot;),</span>
+
+	/**
+	 * Remove face tokens from a FaceSet.
+	 * @see &lt;a href=&quot;https://console.faceplusplus.com.cn/documents/4888399&quot;&gt;API Documentation&lt;/a&gt;
+	 */
+<span class="fc" id="L132">	FACE_REMOVE(&quot;Remove Face&quot;, RequestMethod.POST,&quot;https://api-cn.faceplusplus.com/facepp/v3/faceset/removeface&quot;),</span>
+
+	/**
+	 * Add face tokens to a FaceSet asynchronously.
+	 * @see &lt;a href=&quot;https://console.faceplusplus.com.cn/documents/40622166&quot;&gt;API Documentation&lt;/a&gt;
+	 */
+<span class="fc" id="L138">	FACE_ADD_ASYNC(&quot;Add Face (Async)&quot;, RequestMethod.POST,&quot;https://api-cn.faceplusplus.com/facepp/v3/faceset/async/addface&quot;),</span>
+
+	/**
+	 * Remove face tokens from a FaceSet asynchronously.
+	 * @see &lt;a href=&quot;https://console.faceplusplus.com.cn/documents/40622169&quot;&gt;API Documentation&lt;/a&gt;
+	 */
+<span class="fc" id="L144">	FACE_REMOVE_ASYNC(&quot;Remove Face (Async)&quot;, RequestMethod.POST,&quot;https://api-cn.faceplusplus.com/facepp/v3/faceset/async/removeface&quot;),</span>
+
+	/**
+	 * Query the status of an async add/remove face task.
+	 * @see &lt;a href=&quot;https://console.faceplusplus.com.cn/documents/40622157&quot;&gt;API Documentation&lt;/a&gt;
+	 */
+<span class="fc" id="L150">	FACE_STATUS_ASYNC(&quot;Query Async Task Status&quot;, RequestMethod.POST,&quot; https://api-cn.faceplusplus.com/facepp/v3/faceset/async/task_status&quot;),</span>
+
+	// ---------------- Face Management APIs ------------------
+
+	/**
+	 * Set a user-defined user_id for a face token.
+	 * @see &lt;a href=&quot;https://console.faceplusplus.com.cn/documents/4888387&quot;&gt;API Documentation&lt;/a&gt;
+	 */
+<span class="fc" id="L158">	FACE_SET_USERID(&quot;Set Face User ID&quot;, RequestMethod.POST,&quot;https://api-cn.faceplusplus.com/facepp/v3/face/setuserid&quot;),</span>
+
+	/**
+	 * Get detailed information about a face.
+	 * @see &lt;a href=&quot;https://console.faceplusplus.com.cn/documents/4888385&quot;&gt;API Documentation&lt;/a&gt;
+	 */
+<span class="fc" id="L164">	FACE_GET_DETAIL(&quot;Get Face Detail&quot;, RequestMethod.POST,&quot;https://api-cn.faceplusplus.com/facepp/v3/face/getdetail&quot;),</span>
+
+	// ---------------- Face Recognition APIs ------------------
+
+	/**
+	 * Detect faces in an image.
+	 * @see &lt;a href=&quot;https://console.faceplusplus.com.cn/documents/4888373&quot;&gt;API Documentation&lt;/a&gt;
+	 */
+<span class="fc" id="L172">	FACE_DETECT(&quot;Face Detect&quot;, RequestMethod.POST,&quot;https://api-cn.faceplusplus.com/facepp/v3/detect&quot;),</span>
+
+	/**
+	 * Analyze facial attributes and landmarks.
+	 * @see &lt;a href=&quot;https://console.faceplusplus.com.cn/documents/4888383&quot;&gt;API Documentation&lt;/a&gt;
+	 */
+<span class="fc" id="L178">	FACE_ANALYZE(&quot;Face Analyze&quot;, RequestMethod.POST,&quot;https://api-cn.faceplusplus.com/facepp/v3/face/analyze&quot;),</span>
+
+	/**
+	 * Compare two faces for similarity.
+	 * @see &lt;a href=&quot;https://console.faceplusplus.com.cn/documents/4887586&quot;&gt;API Documentation&lt;/a&gt;
+	 */
+<span class="fc" id="L184">	FACE_COMPARE(&quot;Face Compare&quot;, RequestMethod.POST,&quot;https://api-cn.faceplusplus.com/facepp/v3/compare&quot;),</span>
+
+	/**
+	 * Search for similar faces in a FaceSet.
+	 * @see &lt;a href=&quot;https://console.faceplusplus.com.cn/documents/4888381&quot;&gt;API Documentation&lt;/a&gt;
+	 */
+<span class="fc" id="L190">	FACE_SEARCH(&quot;Face Search&quot;, RequestMethod.POST,&quot;https://api-cn.faceplusplus.com/facepp/v3/search&quot;),</span>
+
+	/**
+	 * Basic skin analysis API.
+	 * @see &lt;a href=&quot;https://console.faceplusplus.com.cn/documents/119745378&quot;&gt;API Documentation&lt;/a&gt;
+	 */
+<span class="fc" id="L196">	FACE_SKIN_ANALYZE(&quot;Skin Analyze - Basic&quot;, RequestMethod.POST,&quot;https://api-cn.faceplusplus.com/facepp/v1/skinanalyze&quot;),</span>
+
+	/**
+	 * Advanced skin analysis API.
+	 * @see &lt;a href=&quot;https://console.faceplusplus.com.cn/documents/140781002&quot;&gt;API Documentation&lt;/a&gt;
+	 */
+<span class="fc" id="L202">	FACE_SKIN_ANALYZE_ADVANCED(&quot;Skin Analyze - Advanced&quot;, RequestMethod.POST,&quot;https://api-cn.faceplusplus.com/facepp/v1/skinanalyze_advanced&quot;),</span>
+
+	/**
+	 * Professional skin analysis API.
+	 * @see &lt;a href=&quot;https://console.faceplusplus.com.cn/documents/307316314&quot;&gt;API Documentation&lt;/a&gt;
+	 */
+<span class="fc" id="L208">	FACE_SKIN_ANALYZE_PRO(&quot;Skin Analyze - Pro&quot;, RequestMethod.POST,&quot;https://api-cn.faceplusplus.com/facepp/v1/skinanalyze_pro&quot;),</span>
+	 ;
+
+	private String opt;
+	private RequestMethod method;
+	private String url;
+
+<span class="fc" id="L215">    FaceppApiAddress(String opt, RequestMethod method, String url) {</span>
+<span class="fc" id="L216">		this.opt = opt;</span>
+<span class="fc" id="L217">		this.method = method;</span>
+<span class="fc" id="L218">		this.url = url;</span>
+<span class="fc" id="L219">	}</span>
+
+	/**
+	 * Returns the human-readable description of this API endpoint.
+	 *
+	 * @return the description string
+	 */
+	public String getOpt() {
+<span class="fc" id="L227">		return opt;</span>
+	}
+
+	/**
+	 * Returns the HTTP request method for this API endpoint.
+	 *
+	 * @return the {@link RequestMethod}
+	 */
+	public RequestMethod getMethod() {
+<span class="fc" id="L236">		return method;</span>
+	}
+
+	/**
+	 * Returns the raw URL template string, without placeholder resolution.
+	 *
+	 * @return the URL template
+	 */
+	public String getUrl() {
+<span class="fc" id="L245">		return url;</span>
+	}
+
+	/**
+	 * Returns the URL with placeholders resolved using the given arguments.
+	 *
+	 * @param args the values to substitute into the URL template placeholders
+	 * @return the resolved URL string
+	 */
+	public String getUrl(Object ...args) {
+<span class="fc" id="L255">		return MessageFormat.format(url, args);</span>
+	}
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.15.202606040825</span></div></body></html>

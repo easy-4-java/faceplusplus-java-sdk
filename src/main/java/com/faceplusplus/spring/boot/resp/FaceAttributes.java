@@ -4,123 +4,123 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
+/**
+ * Contains detected facial attributes such as gender, age, smile, head pose, and blur.
+ * Each attribute is an optional nested object returned when requested via the
+ * {@code return_attributes} parameter.
+ *
+ * @author [@Loong Wan](https://github.com/loong10k)
+ * @since 3.0.0
+ * @see FaceDetectResponse
+ */
 @Data
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class FaceAttributes {
 
     /**
-     * 性别分析结果。返回值为：
-     * Male	男性
-     * Female 女性
+     * Gender analysis result. Value: "Male" or "Female".
      */
     @JsonProperty("gender")
     private FaceAttrValue gender;
 
     /**
-     * 年龄分析结果。返回值为一个非负整数。
+     * Age analysis result. Value is a non-negative integer.
      */
     @JsonProperty("age")
     private FaceAttrValue age;
 
     /**
-     * 笑容分析结果。返回值包含以下属性：
-     *     value：值为一个 [0,100] 的浮点数，小数点后3位有效数字。数值越大表示笑程度高。
-     *     threshold：代表笑容的阈值，超过该阈值认为有笑容。
+     * Smile analysis result. Contains a value [0,100] and a threshold.
      */
     @JsonProperty("smile")
     private FaceAttrSmile smile;
 
     /**
-     * 人脸姿势分析结果。返回值包含以下属性，每个属性的值为一个 [-180, 180] 的浮点数，小数点后 6 位有效数字。单位为角度。
-     * pitch_angle：抬头
-     * roll_angle：旋转（平面旋转）
-     * yaw_angle：摇头
+     * Head pose analysis result. Contains pitch, roll, and yaw angles in degrees [-180, 180].
      */
     @JsonProperty("headpose")
     private FaceAttrHeadpose headpose;
 
     /**
-     * 人脸模糊分析结果。返回值包含以下属性：
-     *     blurness：人脸模糊分析结果。
-     * 每个属性都包含以下字段：
-     *     value 的值为是一个浮点数，范围 [0,100]，小数点后 3 位有效数字。值越大，越模糊。
-     *     threshold 表示人脸模糊度是否影响辨识的阈值。
+     * Blur analysis result for the face.
      */
     @JsonProperty("blur")
     private FaceAttrBlur blur;
 
+    /**
+     * Generic attribute value holder containing a single string value.
+     */
     @Data
     @JsonInclude(JsonInclude.Include.NON_NULL)
     public static class FaceAttrValue {
 
+        /** The attribute value as a string. */
         @JsonProperty("value")
         private String value;
 
     }
 
 
+    /**
+     * Smile attribute with a continuous value and a classification threshold.
+     */
     @Data
     @JsonInclude(JsonInclude.Include.NON_NULL)
     public static class FaceAttrSmile {
 
         /**
-         * 值为一个 [0,100] 的浮点数，小数点后3位有效数字。数值越大表示笑程度高
+         * Smile intensity value in the range [0,100], with 3 decimal places.
+         * Higher values indicate stronger smiling.
          */
         @JsonProperty("value")
         private Float value;
 
         /**
-         * 代表笑容的阈值，超过该阈值认为有笑容
+         * Threshold above which the face is considered to be smiling.
          */
         @JsonProperty("threshold")
         private Float threshold;
 
     }
 
+    /**
+     * Head pose angles representing rotation in 3D space.
+     */
     @Data
     @JsonInclude(JsonInclude.Include.NON_NULL)
     public static class FaceAttrHeadpose {
 
-        /**
-         * 摇头角度
-         */
+        /** Yaw angle (head shaking) in degrees [-180, 180]. */
         @JsonProperty("yaw_angle")
         private Float yaw;
 
-        /**
-         * 抬头角度
-         */
+        /** Pitch angle (head nodding) in degrees [-180, 180]. */
         @JsonProperty("pitch_angle")
         private Float pitch;
 
-        /**
-         * 旋转（平面旋转）角度
-         */
+        /** Roll angle (head tilting) in degrees [-180, 180]. */
         @JsonProperty("roll_angle")
         private Float roll;
 
     }
 
 
+    /**
+     * Blur analysis result for the face.
+     */
     @Data
     @JsonInclude(JsonInclude.Include.NON_NULL)
     public static class FaceAttrBlur {
 
-        /**
-         * 摇头角度
-         */
+        /** Yaw angle component of blur analysis. */
         @JsonProperty("yaw_angle")
         private Float yaw;
 
-        /**
-         * 抬头角度
-         */
+        /** Pitch angle component of blur analysis. */
         @JsonProperty("pitch_angle")
         private Float pitch;
 
-        /**
-         * 旋转（平面旋转）角度
-         */
+        /** Roll angle component of blur analysis. */
         @JsonProperty("roll_angle")
         private Float roll;
 

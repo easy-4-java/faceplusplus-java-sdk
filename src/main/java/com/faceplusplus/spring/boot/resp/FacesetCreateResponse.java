@@ -23,57 +23,53 @@ import lombok.EqualsAndHashCode;
 
 import java.util.List;
 
+/**
+ * Response from the FaceSet Create API.
+ * Contains the new FaceSet token, outer_id, face counts, and any failure details
+ * for face tokens that could not be added during creation.
+ *
+ * @author [@Loong Wan](https://github.com/loong10k)
+ * @since 3.0.0
+ * @see com.faceplusplus.spring.boot.FaceppFacesetOperations#createFaceset(com.faceplusplus.spring.boot.req.FacesetBo)
+ */
 @Data
 @EqualsAndHashCode(callSuper=false)
 @JsonInclude( JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = false)
 public class FacesetCreateResponse extends FaceppResponse {
 
-	/**
-	 * 1、FaceSet 的标识
-	 */
+	/** FaceSet token identifier. */
 	@JsonProperty("faceset_token")
 	private String facesetToken;
 
-	/**
-	 * 2、用户自定义的 FaceSet 标识，如果未定义则返回值为空
-	 */
+	/** User-defined FaceSet identifier. Empty if not defined. */
 	@JsonProperty("outer_id")
 	private String outerId;
 
-	/**
-	 * 3、本次操作成功加入 FaceSet的face_token 数量
-	 */
+	/** Number of face tokens successfully added in this operation. */
 	@JsonProperty("face_added")
 	private Integer faceAdded;
 
-	/**
-	 * 4、操作结束后 FaceSet 中的 face_token 总数量
-	 */
+	/** Total number of face tokens in the FaceSet after this operation. */
 	@JsonProperty("face_count")
 	private Integer faceCount;
 
-	/**
-	 * 5、无法被加入 FaceSet 的 face_token 以及原因
-	 * face_token：人脸标识
-	 * reason：不能被添加的原因，包括 INVALID_FACE_TOKEN 人脸表示不存在 ，QUOTA_EXCEEDED 已达到 FaceSet 存储上限
-	 */
+	/** List of face tokens that could not be added, with reasons. */
 	@JsonProperty("failure_detail")
 	private List<FailureFetail> detail;
 
+	/**
+	 * Details of a face token that failed to be added during FaceSet creation.
+	 */
 	@Data
 	@JsonInclude(JsonInclude.Include.NON_NULL)
 	public static class FailureFetail {
 
-		/**
-		 * 人脸标识
-		 */
+		/** The face token that failed. */
 		@JsonProperty("face_token")
 		private String token;
 
-		/**
-		 * 不能被添加的原因，包括 INVALID_FACE_TOKEN 人脸表示不存在 ，QUOTA_EXCEEDED 已达到 FaceSet 存储上限
-		 */
+		/** Reason for failure: INVALID_FACE_TOKEN or QUOTA_EXCEEDED. */
 		@JsonProperty("reason")
 		private String reason;
 

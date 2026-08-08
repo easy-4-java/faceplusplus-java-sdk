@@ -23,57 +23,53 @@ import lombok.EqualsAndHashCode;
 
 import java.util.List;
 
+/**
+ * Response from the FaceSet Remove Face API.
+ * Contains the FaceSet token, outer_id, the number of faces removed,
+ * total face count, and any failure details.
+ *
+ * @author [@Loong Wan](https://github.com/loong10k)
+ * @since 3.0.0
+ * @see com.faceplusplus.spring.boot.FaceppFacesetOperations#removeFaceByToken(String, String...)
+ */
 @Data
 @EqualsAndHashCode(callSuper=false)
 @JsonInclude( JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = false)
 public class FaceRemoveResponse extends FaceppResponse {
 
-	/**
-	 * 1、FaceSet 的标识
-	 */
+	/** FaceSet token identifier. */
 	@JsonProperty("faceset_token")
 	private String facesetToken;
 
-	/**
-	 * 2、用户自定义的 FaceSet 标识，如果未定义则返回值为空
-	 */
+	/** User-defined FaceSet identifier. Empty if not defined. */
 	@JsonProperty("outer_id")
 	private String outerId;
 
-	/**
-	 * 3、成功从FaceSet中移除的face_token数量
-	 */
+	/** Number of face tokens successfully removed in this operation. */
 	@JsonProperty("face_removed")
 	private Integer faceRemoved;
 
-	/**
-	 * 4、操作结束后 FaceSet 中的 face_token 总数量
-	 */
+	/** Total number of face tokens in the FaceSet after this operation. */
 	@JsonProperty("face_count")
 	private Integer faceCount;
 
-	/**
-	 * 5、无法从FaceSet中移除的face_token以及原因
-	 * face_token：人脸标识
-	 * reason：不能被移除的原因，包括 INVALID_FACE_TOKEN 人脸标识不存在
-	 */
+	/** List of face tokens that could not be removed, with reasons. */
 	@JsonProperty("failure_detail")
 	private List<FaceAddResponse.FailureFetail> detail;
 
+	/**
+	 * Details of a face token that failed to be removed from the FaceSet.
+	 */
 	@Data
 	@JsonInclude(JsonInclude.Include.NON_NULL)
 	public static class FailureFetail {
 
-		/**
-		 * 人脸标识
-		 */
+		/** The face token that failed. */
 		@JsonProperty("face_token")
 		private String token;
 
-		/**
-		 * 不能被添加的原因，包括 INVALID_FACE_TOKEN 人脸表示不存在 ，QUOTA_EXCEEDED 已达到 FaceSet 存储上限
-		 */
+		/** Reason for failure: INVALID_FACE_TOKEN or QUOTA_EXCEEDED. */
 		@JsonProperty("reason")
 		private String reason;
 

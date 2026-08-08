@@ -1,0 +1,368 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>FaceppFaceOperations.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">io.github.easy4j:faceplusplus-java-sdk</a> &gt; <a href="index.source.html" class="el_package">com.faceplusplus.spring.boot</a> &gt; <span class="el_source">FaceppFaceOperations.java</span></div><h1>FaceppFaceOperations.java</h1><pre class="source lang-java linenums">/*
+ * Copyright (c) 2018, Loong Wan (https://github.com/loong10k).
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;); you may not
+ * use this file except in compliance with the License. You may obtain a copy of
+ * the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
+ */
+package com.faceplusplus.spring.boot;
+
+import com.faceplusplus.spring.boot.req.*;
+import com.faceplusplus.spring.boot.resp.*;
+import com.google.common.collect.ImmutableMap;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.Map;
+
+/**
+ * Synchronous operations for the Face++ face recognition API group.
+ * Provides methods for face detection, analysis, comparison, search, and skin analysis.
+ *
+ * @author [@Loong Wan](https://github.com/loong10k)
+ * @since 3.0.0
+ * @see FaceppFaceAsyncOperations
+ * @see FaceppApiAddress
+ */
+public class FaceppFaceOperations extends FaceppOperations {
+
+	/**
+	 * Constructs a new {@code FaceppFaceOperations} bound to the given template.
+	 *
+	 * @param faceppTemplate the template providing access to SDK configuration and HTTP client
+	 */
+	public FaceppFaceOperations(FaceppTemplate faceppTemplate) {
+<span class="fc" id="L43">		super(faceppTemplate);</span>
+<span class="fc" id="L44">	}</span>
+
+	/**
+	 * Detects faces in an image specified by URL.
+	 * Returns face tokens and optional attributes/landmarks for each detected face.
+	 *
+	 * @param imageUrl the URL of the image to analyze
+	 * @param options  optional detection parameters (landmark, attributes, etc.)
+	 * @return the detection response containing face tokens and metadata
+	 * @throws IOException if the HTTP request fails
+	 * @see FaceppApiAddress#FACE_DETECT
+	 */
+	public FaceDetectResponse detectUrl(String imageUrl, FaceDetectOptions options) throws IOException {
+<span class="fc" id="L57">		String reqUrl = FaceppApiAddress.FACE_DETECT.getUrl();</span>
+<span class="fc" id="L58">		Map params = new ImmutableMap.Builder&lt;String, Object&gt;()</span>
+<span class="fc" id="L59">				.put(&quot;api_key&quot;, getFaceppProperties().getAppId())</span>
+<span class="fc" id="L60">				.put(&quot;api_secret&quot;, getFaceppProperties().getAppCertificate())</span>
+<span class="fc" id="L61">				.put(&quot;image_url&quot;, imageUrl)</span>
+<span class="fc" id="L62">				.putAll(getObjectMapper().readValue(getObjectMapper().writeValueAsString(options), Map.class))</span>
+<span class="fc" id="L63">				.build();</span>
+<span class="fc" id="L64">		FaceDetectResponse resp = getFaceppOkHttp3Template().post(reqUrl, null, params, FaceDetectResponse.class);</span>
+<span class="fc" id="L65">		return resp;</span>
+	}
+
+	/**
+	 * Detects faces in an image specified by Base64-encoded data.
+	 *
+	 * @param imageBase64 Base64-encoded binary image data
+	 * @param options     optional detection parameters (landmark, attributes, etc.)
+	 * @return the detection response containing face tokens and metadata
+	 * @throws IOException if the HTTP request fails
+	 * @see FaceppApiAddress#FACE_DETECT
+	 */
+	public FaceDetectResponse detectBase64(String imageBase64, FaceDetectOptions options) throws IOException {
+<span class="fc" id="L78">		String reqUrl = FaceppApiAddress.FACE_DETECT.getUrl();</span>
+<span class="fc" id="L79">		Map params = new ImmutableMap.Builder&lt;String, Object&gt;()</span>
+<span class="fc" id="L80">				.put(&quot;api_key&quot;, getFaceppProperties().getAppId())</span>
+<span class="fc" id="L81">				.put(&quot;api_secret&quot;, getFaceppProperties().getAppCertificate())</span>
+<span class="fc" id="L82">				.put(&quot;image_base64&quot;, imageBase64)</span>
+<span class="fc" id="L83">				.putAll(getObjectMapper().readValue(getObjectMapper().writeValueAsString(options), Map.class))</span>
+<span class="fc" id="L84">				.build();</span>
+<span class="fc" id="L85">		FaceDetectResponse resp = getFaceppOkHttp3Template().post(reqUrl, null, params, FaceDetectResponse.class);</span>
+<span class="fc" id="L86">		return resp;</span>
+	}
+
+	/**
+	 * Detects faces in an image file uploaded as multipart/form-data.
+	 *
+	 * @param imageFile the image file to analyze
+	 * @param options   optional detection parameters (landmark, attributes, etc.)
+	 * @return the detection response containing face tokens and metadata
+	 * @throws IOException if the HTTP request fails
+	 * @see FaceppApiAddress#FACE_DETECT
+	 */
+	public FaceDetectResponse detectFile(File imageFile, FaceDetectOptions options) throws IOException {
+<span class="fc" id="L99">		String reqUrl = FaceppApiAddress.FACE_DETECT.getUrl();</span>
+<span class="fc" id="L100">		Map params = new ImmutableMap.Builder&lt;String, Object&gt;()</span>
+<span class="fc" id="L101">				.put(&quot;api_key&quot;, getFaceppProperties().getAppId())</span>
+<span class="fc" id="L102">				.put(&quot;api_secret&quot;, getFaceppProperties().getAppCertificate())</span>
+<span class="fc" id="L103">				.put(&quot;image_file&quot;, imageFile)</span>
+<span class="fc" id="L104">				.putAll(getObjectMapper().readValue(getObjectMapper().writeValueAsString(options), Map.class))</span>
+<span class="fc" id="L105">				.build();</span>
+<span class="fc" id="L106">		FaceDetectResponse resp = getFaceppOkHttp3Template().doPartRequest(reqUrl, params, FaceDetectResponse.class);</span>
+<span class="fc" id="L107">		return resp;</span>
+	}
+
+	/**
+	 * Analyzes facial attributes and landmarks for one or more face tokens.
+	 * A single call supports up to 5 face tokens.
+	 *
+	 * @param faceTokens array of face token strings (max 5)
+	 * @param options    optional analysis parameters
+	 * @return the analysis response containing facial attributes and landmarks
+	 * @throws IOException if the HTTP request fails
+	 * @see FaceppApiAddress#FACE_ANALYZE
+	 */
+	public FaceAnalyzeResponse analyze(String[] faceTokens, FaceAnalyzeOptions options) throws IOException {
+<span class="fc" id="L121">		String reqUrl = FaceppApiAddress.FACE_ANALYZE.getUrl();</span>
+<span class="fc" id="L122">		Map params = new ImmutableMap.Builder&lt;String, Object&gt;()</span>
+<span class="fc" id="L123">				.put(&quot;api_key&quot;, getFaceppProperties().getAppId())</span>
+<span class="fc" id="L124">				.put(&quot;api_secret&quot;, getFaceppProperties().getAppCertificate())</span>
+<span class="fc" id="L125">				.put(&quot;face_tokens&quot;, faceTokens)</span>
+<span class="fc" id="L126">				.putAll(getObjectMapper().readValue(getObjectMapper().writeValueAsString(options), Map.class))</span>
+<span class="fc" id="L127">				.build();</span>
+<span class="fc" id="L128">		FaceAnalyzeResponse resp = getFaceppOkHttp3Template().post(reqUrl, null, params, FaceAnalyzeResponse.class);</span>
+<span class="fc" id="L129">		return resp;</span>
+	}
+
+	/**
+	 * Compares two faces specified by image URLs.
+	 * Returns a confidence score indicating the likelihood that the two faces belong to the same person.
+	 *
+	 * @param imageUrl1 the URL of the first image
+	 * @param imageUrl2 the URL of the second image
+	 * @return the comparison response containing confidence and thresholds
+	 * @throws IOException if the HTTP request fails
+	 * @see FaceppApiAddress#FACE_COMPARE
+	 */
+	public FaceCompareResponse compareUrl(String imageUrl1, String imageUrl2) throws IOException {
+<span class="fc" id="L143">		String reqUrl = FaceppApiAddress.FACE_COMPARE.getUrl();</span>
+<span class="fc" id="L144">		Map params = new ImmutableMap.Builder&lt;String, Object&gt;()</span>
+<span class="fc" id="L145">				.put(&quot;api_key&quot;, getFaceppProperties().getAppId())</span>
+<span class="fc" id="L146">				.put(&quot;api_secret&quot;, getFaceppProperties().getAppCertificate())</span>
+<span class="fc" id="L147">				.put(&quot;image_url1&quot;, imageUrl1)</span>
+<span class="fc" id="L148">				.put(&quot;image_url2&quot;, imageUrl2)</span>
+<span class="fc" id="L149">				.build();</span>
+<span class="fc" id="L150">		FaceCompareResponse resp = getFaceppOkHttp3Template().doPartRequest(reqUrl, params, FaceCompareResponse.class);</span>
+<span class="fc" id="L151">		return resp;</span>
+	}
+
+	/**
+	 * Compares two faces specified by their face tokens.
+	 *
+	 * @param faceToken1 the face token of the first face
+	 * @param faceToken2 the face token of the second face
+	 * @return the comparison response containing confidence and thresholds
+	 * @throws IOException if the HTTP request fails
+	 * @see FaceppApiAddress#FACE_COMPARE
+	 */
+	public FaceCompareResponse compareToken(String faceToken1, String faceToken2) throws IOException {
+<span class="fc" id="L164">		String reqUrl = FaceppApiAddress.FACE_COMPARE.getUrl();</span>
+<span class="fc" id="L165">		Map params = new ImmutableMap.Builder&lt;String, Object&gt;()</span>
+<span class="fc" id="L166">				.put(&quot;api_key&quot;, getFaceppProperties().getAppId())</span>
+<span class="fc" id="L167">				.put(&quot;api_secret&quot;, getFaceppProperties().getAppCertificate())</span>
+<span class="fc" id="L168">				.put(&quot;face_token1&quot;, faceToken1)</span>
+<span class="fc" id="L169">				.put(&quot;face_token2&quot;, faceToken2)</span>
+<span class="fc" id="L170">				.build();</span>
+<span class="fc" id="L171">		FaceCompareResponse resp = getFaceppOkHttp3Template().doPartRequest(reqUrl, params, FaceCompareResponse.class);</span>
+<span class="fc" id="L172">		return resp;</span>
+	}
+
+	/**
+	 * Compares two faces specified by Base64-encoded image data.
+	 *
+	 * @param imageBase64_1 Base64-encoded binary data of the first image
+	 * @param imageBase64_2 Base64-encoded binary data of the second image
+	 * @return the comparison response containing confidence and thresholds
+	 * @throws IOException if the HTTP request fails
+	 * @see FaceppApiAddress#FACE_COMPARE
+	 */
+	public FaceCompareResponse compareBase64(String imageBase64_1, String imageBase64_2) throws IOException {
+<span class="fc" id="L185">		String reqUrl = FaceppApiAddress.FACE_DETECT.getUrl();</span>
+<span class="fc" id="L186">		Map params = new ImmutableMap.Builder&lt;String, Object&gt;()</span>
+<span class="fc" id="L187">				.put(&quot;api_key&quot;, getFaceppProperties().getAppId())</span>
+<span class="fc" id="L188">				.put(&quot;api_secret&quot;, getFaceppProperties().getAppCertificate())</span>
+<span class="fc" id="L189">				.put(&quot;image_base64_1&quot;, imageBase64_1)</span>
+<span class="fc" id="L190">				.put(&quot;image_base64_2&quot;, imageBase64_2)</span>
+<span class="fc" id="L191">				.build();</span>
+<span class="fc" id="L192">		FaceCompareResponse resp = getFaceppOkHttp3Template().doPartRequest(reqUrl, params, FaceCompareResponse.class);</span>
+<span class="fc" id="L193">		return resp;</span>
+	}
+
+	/**
+	 * Compares two faces specified by image files uploaded as multipart/form-data.
+	 *
+	 * @param imageFile1 the first image file
+	 * @param imageFile2 the second image file
+	 * @return the comparison response containing confidence and thresholds
+	 * @throws IOException if the HTTP request fails
+	 * @see FaceppApiAddress#FACE_COMPARE
+	 */
+	public FaceCompareResponse compareFile(File imageFile1, File imageFile2) throws IOException {
+<span class="fc" id="L206">		String reqUrl = FaceppApiAddress.FACE_COMPARE.getUrl();</span>
+<span class="fc" id="L207">		Map params = new ImmutableMap.Builder&lt;String, Object&gt;()</span>
+<span class="fc" id="L208">				.put(&quot;api_key&quot;, getFaceppProperties().getAppId())</span>
+<span class="fc" id="L209">				.put(&quot;api_secret&quot;, getFaceppProperties().getAppCertificate())</span>
+<span class="fc" id="L210">				.put(&quot;image_file1&quot;, imageFile1)</span>
+<span class="fc" id="L211">				.put(&quot;image_file2&quot;, imageFile2)</span>
+<span class="fc" id="L212">				.build();</span>
+<span class="fc" id="L213">		FaceCompareResponse resp = getFaceppOkHttp3Template().doPartRequest(reqUrl, params, FaceCompareResponse.class);</span>
+<span class="fc" id="L214">		return resp;</span>
+	}
+
+	/**
+	 * Searches for similar faces in a FaceSet using an image URL.
+	 *
+	 * @param imageUrl the URL of the image containing the target face
+	 * @param options  optional search parameters
+	 * @return the search response containing matching face results
+	 * @throws IOException if the HTTP request fails
+	 * @see FaceppApiAddress#FACE_SEARCH
+	 */
+	public FaceSearchResponse searchUrl(String imageUrl, FaceSearchOptions options) throws IOException {
+<span class="fc" id="L227">		String reqUrl = FaceppApiAddress.FACE_COMPARE.getUrl();</span>
+<span class="fc" id="L228">		Map params = new ImmutableMap.Builder&lt;String, Object&gt;()</span>
+<span class="fc" id="L229">				.put(&quot;api_key&quot;, getFaceppProperties().getAppId())</span>
+<span class="fc" id="L230">				.put(&quot;api_secret&quot;, getFaceppProperties().getAppCertificate())</span>
+<span class="fc" id="L231">				.put(&quot;image_url&quot;, imageUrl)</span>
+<span class="fc" id="L232">				.putAll(getObjectMapper().readValue(getObjectMapper().writeValueAsString(options), Map.class))</span>
+<span class="fc" id="L233">				.build();</span>
+<span class="fc" id="L234">		FaceSearchResponse resp = getFaceppOkHttp3Template().doPartRequest(reqUrl, params, FaceSearchResponse.class);</span>
+<span class="fc" id="L235">		return resp;</span>
+	}
+
+	/**
+	 * Searches for similar faces in a FaceSet using a face token.
+	 *
+	 * @param faceToken the face token of the target face
+	 * @param options   optional search parameters
+	 * @return the search response containing matching face results
+	 * @throws IOException if the HTTP request fails
+	 * @see FaceppApiAddress#FACE_SEARCH
+	 */
+	public FaceSearchResponse searchToken(String faceToken, FaceSearchOptions options) throws IOException {
+<span class="fc" id="L248">		String reqUrl = FaceppApiAddress.FACE_COMPARE.getUrl();</span>
+<span class="fc" id="L249">		Map params = new ImmutableMap.Builder&lt;String, Object&gt;()</span>
+<span class="fc" id="L250">				.put(&quot;api_key&quot;, getFaceppProperties().getAppId())</span>
+<span class="fc" id="L251">				.put(&quot;api_secret&quot;, getFaceppProperties().getAppCertificate())</span>
+<span class="fc" id="L252">				.put(&quot;face_token&quot;, faceToken)</span>
+<span class="fc" id="L253">				.putAll(getObjectMapper().readValue(getObjectMapper().writeValueAsString(options), Map.class))</span>
+<span class="fc" id="L254">				.build();</span>
+<span class="fc" id="L255">		FaceSearchResponse resp = getFaceppOkHttp3Template().doPartRequest(reqUrl, params, FaceSearchResponse.class);</span>
+<span class="fc" id="L256">		return resp;</span>
+	}
+
+	/**
+	 * Searches for similar faces in a FaceSet using Base64-encoded image data.
+	 *
+	 * @param imageBase64 Base64-encoded binary image data
+	 * @param options     optional search parameters
+	 * @return the search response containing matching face results
+	 * @throws IOException if the HTTP request fails
+	 * @see FaceppApiAddress#FACE_SEARCH
+	 */
+	public FaceSearchResponse searchBase64(String imageBase64, FaceSearchOptions options) throws IOException {
+<span class="fc" id="L269">		String reqUrl = FaceppApiAddress.FACE_DETECT.getUrl();</span>
+<span class="fc" id="L270">		Map params = new ImmutableMap.Builder&lt;String, Object&gt;()</span>
+<span class="fc" id="L271">				.put(&quot;api_key&quot;, getFaceppProperties().getAppId())</span>
+<span class="fc" id="L272">				.put(&quot;api_secret&quot;, getFaceppProperties().getAppCertificate())</span>
+<span class="fc" id="L273">				.put(&quot;image_base64&quot;, imageBase64)</span>
+<span class="fc" id="L274">				.putAll(getObjectMapper().readValue(getObjectMapper().writeValueAsString(options), Map.class))</span>
+<span class="fc" id="L275">				.build();</span>
+<span class="fc" id="L276">		FaceSearchResponse resp = getFaceppOkHttp3Template().doPartRequest(reqUrl, params, FaceSearchResponse.class);</span>
+<span class="fc" id="L277">		return resp;</span>
+	}
+
+	/**
+	 * Searches for similar faces in a FaceSet using an image file.
+	 *
+	 * @param imageFile the image file containing the target face
+	 * @param options   optional search parameters
+	 * @return the search response containing matching face results
+	 * @throws IOException if the HTTP request fails
+	 * @see FaceppApiAddress#FACE_SEARCH
+	 */
+	public FaceSearchResponse searchFile(File imageFile, FaceSearchOptions options) throws IOException {
+<span class="fc" id="L290">		String reqUrl = FaceppApiAddress.FACE_SEARCH.getUrl();</span>
+<span class="fc" id="L291">		Map params = new ImmutableMap.Builder&lt;String, Object&gt;()</span>
+<span class="fc" id="L292">				.put(&quot;api_key&quot;, getFaceppProperties().getAppId())</span>
+<span class="fc" id="L293">				.put(&quot;api_secret&quot;, getFaceppProperties().getAppCertificate())</span>
+<span class="fc" id="L294">				.put(&quot;image_file&quot;, imageFile)</span>
+<span class="fc" id="L295">				.putAll(getObjectMapper().readValue(getObjectMapper().writeValueAsString(options), Map.class))</span>
+<span class="fc" id="L296">				.build();</span>
+<span class="fc" id="L297">		FaceSearchResponse resp = getFaceppOkHttp3Template().doPartRequest(reqUrl, params, FaceSearchResponse.class);</span>
+<span class="fc" id="L298">		return resp;</span>
+	}
+
+	/**
+	 * Performs skin analysis on a face in an image specified by URL.
+	 *
+	 * @param imageUrl the URL of the image containing the face
+	 * @param type     the skin analysis type (BASIC, ADVANCED, or PRO)
+	 * @param options  optional skin analysis parameters
+	 * @return the skin analysis response
+	 * @throws IOException if the HTTP request fails
+	 * @see SkinAnalyzeType
+	 */
+	public FaceSkinAnalyzeResponse skinAnalyzeUrl(String imageUrl, SkinAnalyzeType type, SkinAnalyzeOptions options) throws IOException {
+<span class="fc" id="L312">		String reqUrl = type.getApiAddress().getUrl();</span>
+<span class="fc" id="L313">		Map params = new ImmutableMap.Builder&lt;String, Object&gt;()</span>
+<span class="fc" id="L314">				.put(&quot;api_key&quot;, getFaceppProperties().getAppId())</span>
+<span class="fc" id="L315">				.put(&quot;api_secret&quot;, getFaceppProperties().getAppCertificate())</span>
+<span class="fc" id="L316">				.put(&quot;image_url&quot;, imageUrl)</span>
+<span class="fc" id="L317">				.putAll(getObjectMapper().readValue(getObjectMapper().writeValueAsString(options), Map.class))</span>
+<span class="fc" id="L318">				.build();</span>
+<span class="fc" id="L319">		FaceSkinAnalyzeResponse resp = getFaceppOkHttp3Template().doPartRequest(reqUrl, params, FaceSkinAnalyzeResponse.class);</span>
+<span class="fc" id="L320">		return resp;</span>
+	}
+
+	/**
+	 * Performs skin analysis on a face in an image specified by Base64-encoded data.
+	 *
+	 * @param imageBase64 Base64-encoded binary image data
+	 * @param type        the skin analysis type (BASIC, ADVANCED, or PRO)
+	 * @param options     optional skin analysis parameters
+	 * @return the skin analysis response
+	 * @throws IOException if the HTTP request fails
+	 * @see SkinAnalyzeType
+	 */
+	public FaceSkinAnalyzeResponse skinAnalyzeBase64(String imageBase64, SkinAnalyzeType type, SkinAnalyzeOptions options) throws IOException {
+<span class="fc" id="L334">		String reqUrl = type.getApiAddress().getUrl();</span>
+<span class="fc" id="L335">		Map params = new ImmutableMap.Builder&lt;String, Object&gt;()</span>
+<span class="fc" id="L336">				.put(&quot;api_key&quot;, getFaceppProperties().getAppId())</span>
+<span class="fc" id="L337">				.put(&quot;api_secret&quot;, getFaceppProperties().getAppCertificate())</span>
+<span class="fc" id="L338">				.put(&quot;image_base64&quot;, imageBase64)</span>
+<span class="fc" id="L339">				.putAll(getObjectMapper().readValue(getObjectMapper().writeValueAsString(options), Map.class))</span>
+<span class="fc" id="L340">				.build();</span>
+<span class="fc" id="L341">		FaceSkinAnalyzeResponse resp = getFaceppOkHttp3Template().doPartRequest(reqUrl, params, FaceSkinAnalyzeResponse.class);</span>
+<span class="fc" id="L342">		return resp;</span>
+	}
+
+	/**
+	 * Performs skin analysis on a face in an image file.
+	 *
+	 * @param imageFile the image file containing the face
+	 * @param type      the skin analysis type (BASIC, ADVANCED, or PRO)
+	 * @param options   optional skin analysis parameters
+	 * @return the skin analysis response
+	 * @throws IOException if the HTTP request fails
+	 * @see SkinAnalyzeType
+	 */
+	public FaceSkinAnalyzeResponse skinAnalyzeFile(File imageFile, SkinAnalyzeType type, SkinAnalyzeOptions options) throws IOException {
+<span class="fc" id="L356">		String reqUrl = type.getApiAddress().getUrl();</span>
+<span class="fc" id="L357">		Map params = new ImmutableMap.Builder&lt;String, Object&gt;()</span>
+<span class="fc" id="L358">				.put(&quot;api_key&quot;, getFaceppProperties().getAppId())</span>
+<span class="fc" id="L359">				.put(&quot;api_secret&quot;, getFaceppProperties().getAppCertificate())</span>
+<span class="fc" id="L360">				.put(&quot;image_file&quot;, imageFile)</span>
+<span class="fc" id="L361">				.putAll(getObjectMapper().readValue(getObjectMapper().writeValueAsString(options), Map.class))</span>
+<span class="fc" id="L362">				.build();</span>
+<span class="fc" id="L363">		FaceSkinAnalyzeResponse resp = getFaceppOkHttp3Template().doPartRequest(reqUrl, params, FaceSkinAnalyzeResponse.class);</span>
+<span class="fc" id="L364">		return resp;</span>
+	}
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.15.202606040825</span></div></body></html>

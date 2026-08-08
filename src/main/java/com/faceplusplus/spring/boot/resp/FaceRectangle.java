@@ -4,31 +4,32 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
+/**
+ * Represents the bounding rectangle of a detected face in an image.
+ * Coordinates are in pixels relative to the top-left corner of the image.
+ *
+ * @author [@Loong Wan](https://github.com/loong10k)
+ * @since 3.0.0
+ * @see FaceDetectResponse
+ * @see FaceDetailResponse
+ */
 @Data
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class FaceRectangle {
 
-    /**
-     * 矩形框左上角像素点的纵坐标
-     */
+    /** Y-coordinate of the top-left corner of the rectangle (in pixels). */
     @JsonProperty("top")
     private Integer top;
 
-    /**
-     * 矩形框左上角像素点的横坐标
-     */
+    /** X-coordinate of the top-left corner of the rectangle (in pixels). */
     @JsonProperty("left")
     private Integer left;
 
-    /**
-     * 矩形框的宽度
-     */
+    /** Width of the face rectangle (in pixels). */
     @JsonProperty("width")
     private Integer width;
 
-    /**
-     * 矩形框的高度
-     */
+    /** Height of the face rectangle (in pixels). */
     @JsonProperty("height")
     private Integer height;
 

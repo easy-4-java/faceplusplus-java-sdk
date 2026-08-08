@@ -4,31 +4,31 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
+/**
+ * Represents a facial landmark point or region returned by the Face++ API.
+ * Contains position and dimension information for a specific facial feature.
+ *
+ * @author [@Loong Wan](https://github.com/loong10k)
+ * @since 3.0.0
+ * @see FaceDetectResponse
+ */
 @Data
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class FaceLandmark {
 
-    /**
-     * 矩形框左上角像素点的纵坐标
-     */
+    /** Y-coordinate of the landmark region top-left corner (in pixels). */
     @JsonProperty("top")
     private Integer top;
 
-    /**
-     * 矩形框左上角像素点的横坐标
-     */
+    /** X-coordinate of the landmark region top-left corner (in pixels). */
     @JsonProperty("left")
     private Integer left;
 
-    /**
-     * 矩形框的宽度
-     */
+    /** Width of the landmark region (in pixels). */
     @JsonProperty("width")
     private Integer width;
 
-    /**
-     * 矩形框的高度
-     */
+    /** Height of the landmark region (in pixels). */
     @JsonProperty("height")
     private Integer height;
 

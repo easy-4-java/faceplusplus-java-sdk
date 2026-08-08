@@ -23,75 +23,65 @@ import lombok.EqualsAndHashCode;
 
 import java.util.List;
 
+/**
+ * Response from the async task status query API.
+ * Contains the task identifier, completion status, FaceSet information,
+ * and the results of the asynchronous add/remove face operation.
+ *
+ * @author [@Loong Wan](https://github.com/loong10k)
+ * @since 3.0.0
+ * @see com.faceplusplus.spring.boot.FaceppFacesetAsyncOperations#getFaceStatusByTaskId(String)
+ */
 @Data
 @EqualsAndHashCode(callSuper=false)
 @JsonInclude( JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = false)
 public class FaceStatusResponse extends FaceppResponse {
 
-	/**
-	 * 1、标示当前异步请求的唯一task标识，之后调用任务状态查询接口时，使用当前值作为参数，如果发生错误，此字段不返回。
-	 */
+	/** Unique identifier of the async task. */
 	@JsonProperty("task_id")
 	private String taskId;
 
-	/**
-	 * 2、1: 标示当前异步任务已经完成
-	 */
+	/** Task status: 1 indicates the async task has completed. */
 	@JsonProperty("status")
 	private Integer status;
 
-	/**
-	 * 3、FaceSet 的标识
-	 */
+	/** FaceSet token identifier. */
 	@JsonProperty("faceset_token")
 	private String facesetToken;
 
-	/**
-	 * 4、用户自定义的 FaceSet 标识，如果未定义则返回值为空
-	 */
+	/** User-defined FaceSet identifier. Empty if not defined. */
 	@JsonProperty("outer_id")
 	private String outerId;
 
-	/**
-	 * 5、成功加入 FaceSet 的 face_token 数量（如果当前任务类型为添加人脸，返回此字段）
-	 */
+	/** Number of face tokens successfully added (for add-face tasks). */
 	@JsonProperty("face_added")
 	private Integer faceAdded;
 
-	/**
-	 * 6、成功从FaceSet中移除的face_token数量（如果当前任务类型为删除人脸，返回此字段）
-	 */
+	/** Number of face tokens successfully removed (for remove-face tasks). */
 	@JsonProperty("face_removed")
 	private Integer faceRemoved;
 
-	/**
-	 * 7、操作结束后 FaceSet 中的 face_token 总数量
-	 */
+	/** Total number of face tokens in the FaceSet after the operation. */
 	@JsonProperty("face_count")
 	private Integer faceCount;
 
-	/**
-	 * 8、无法被加入/删除FaceSet的face_token以及原因
-	 * face_token：人脸标识不存在
-	 * reason：不能被添加的原因，包括 INVALID_FACE_TOKEN 人脸标识不存在 ，QUOTA_EXCEEDED 已达到FaceSet存储上限
-	 */
+	/** List of face tokens that failed to be added/removed, with reasons. */
 	@JsonProperty("failure_detail")
 	private List<FaceAddResponse.FailureFetail> detail;
 
+	/**
+	 * Details of a face token that failed during the async operation.
+	 */
 	@Data
 	@JsonInclude(JsonInclude.Include.NON_NULL)
 	public static class FailureFetail {
 
-		/**
-		 * 人脸标识
-		 */
+		/** The face token that failed. */
 		@JsonProperty("face_token")
 		private String token;
 
-		/**
-		 * 不能被添加的原因，包括 INVALID_FACE_TOKEN 人脸表示不存在 ，QUOTA_EXCEEDED 已达到 FaceSet 存储上限
-		 */
+		/** Reason for failure: INVALID_FACE_TOKEN or QUOTA_EXCEEDED. */
 		@JsonProperty("reason")
 		private String reason;
 
