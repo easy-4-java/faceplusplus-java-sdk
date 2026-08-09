@@ -1,1 +1,0 @@
-packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html","k":"18"},{"l":"com.faceplusplus.spring.boot"},{"l":"com.faceplusplus.spring.boot.req"},{"l":"com.faceplusplus.spring.boot.resp"}];updateSearchResults();
