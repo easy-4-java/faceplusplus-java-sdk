@@ -7,7 +7,7 @@ import java.util.function.Function;
 /**
  * Enumeration of skin analysis types, each mapping to a specific Face++ API endpoint.
  *
- * @author [@Loong Wan](https://github.com/loong10k)
+ * @author <a href="https://github.com/loong10k">Loong Wan</a>
  * @since 3.0.0
  * @see FaceppApiAddress#FACE_SKIN_ANALYZE
  * @see FaceppApiAddress#FACE_SKIN_ANALYZE_ADVANCED

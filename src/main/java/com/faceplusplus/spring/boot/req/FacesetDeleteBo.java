@@ -8,7 +8,7 @@ import lombok.Data;
  * Business object for deleting a FaceSet.
  * Supports deletion by outer_id with optional check-empty behavior.
  *
- * @author [@Loong Wan](https://github.com/loong10k)
+ * @author <a href="https://github.com/loong10k">Loong Wan</a>
  * @since 3.0.0
  * @see com.faceplusplus.spring.boot.FaceppFacesetOperations#deleteFaceset(FacesetDeleteBo)
  */

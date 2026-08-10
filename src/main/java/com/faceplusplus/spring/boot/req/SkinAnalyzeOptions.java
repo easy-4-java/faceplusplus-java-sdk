@@ -9,7 +9,7 @@ import lombok.Data;
  * Options for the Skin Analyze API.
  * Controls face quality enforcement, confidence return, and result map types.
  *
- * @author [@Loong Wan](https://github.com/loong10k)
+ * @author <a href="https://github.com/loong10k">Loong Wan</a>
  * @since 3.0.0
  * @see com.faceplusplus.spring.boot.FaceppFaceOperations#skinAnalyzeUrl(String, SkinAnalyzeType, SkinAnalyzeOptions)
  */

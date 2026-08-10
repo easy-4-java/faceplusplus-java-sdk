@@ -28,7 +28,7 @@ import java.util.List;
  * Contains the FaceSet token, outer_id, the number of faces removed,
  * total face count, and any failure details.
  *
- * @author [@Loong Wan](https://github.com/loong10k)
+ * @author <a href="https://github.com/loong10k">Loong Wan</a>
  * @since 3.0.0
  * @see com.faceplusplus.spring.boot.FaceppFacesetOperations#removeFaceByToken(String, String...)
  */

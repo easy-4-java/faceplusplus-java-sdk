@@ -9,7 +9,7 @@ import lombok.Data;
  * Each attribute is an optional nested object returned when requested via the
  * {@code return_attributes} parameter.
  *
- * @author [@Loong Wan](https://github.com/loong10k)
+ * @author <a href="https://github.com/loong10k">Loong Wan</a>
  * @since 3.0.0
  * @see FaceDetectResponse
  */

@@ -30,7 +30,7 @@ import java.util.stream.Stream;
  * Synchronous operations for FaceSet management, including create, delete, update,
  * list, and face token add/remove operations, as well as face information management.
  *
- * @author [@Loong Wan](https://github.com/loong10k)
+ * @author <a href="https://github.com/loong10k">Loong Wan</a>
  * @since 3.0.0
  * @see FaceppFacesetAsyncOperations
  * @see FaceppApiAddress

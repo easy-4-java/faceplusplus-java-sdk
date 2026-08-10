@@ -23,7 +23,7 @@ import lombok.extern.slf4j.Slf4j;
  * Provides common access to {@link FaceppTemplate}, {@link FaceppProperties},
  * {@link FaceppOkHttp3Template}, and the shared {@link ObjectMapper}.
  *
- * @author [@Loong Wan](https://github.com/loong10k)
+ * @author <a href="https://github.com/loong10k">Loong Wan</a>
  * @since 3.0.0
  * @see FaceppTemplate
  * @see FaceppFaceOperations

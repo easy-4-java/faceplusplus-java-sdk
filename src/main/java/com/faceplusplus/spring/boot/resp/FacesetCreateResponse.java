@@ -28,7 +28,7 @@ import java.util.List;
  * Contains the new FaceSet token, outer_id, face counts, and any failure details
  * for face tokens that could not be added during creation.
  *
- * @author [@Loong Wan](https://github.com/loong10k)
+ * @author <a href="https://github.com/loong10k">Loong Wan</a>
  * @since 3.0.0
  * @see com.faceplusplus.spring.boot.FaceppFacesetOperations#createFaceset(com.faceplusplus.spring.boot.req.FacesetBo)
  */

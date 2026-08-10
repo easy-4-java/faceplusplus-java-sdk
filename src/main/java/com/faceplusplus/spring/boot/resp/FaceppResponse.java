@@ -11,7 +11,7 @@ import lombok.Data;
  * Contains common fields shared across all API endpoints: status code,
  * time used, request ID, and error message.
  *
- * @author [@Loong Wan](https://github.com/loong10k)
+ * @author <a href="https://github.com/loong10k">Loong Wan</a>
  * @since 3.0.0
  * @see FaceDetectResponse
  * @see FaceCompareResponse

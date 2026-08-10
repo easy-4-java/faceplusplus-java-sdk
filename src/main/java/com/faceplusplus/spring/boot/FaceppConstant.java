@@ -4,7 +4,7 @@ package com.faceplusplus.spring.boot;
  * Constants used across the Face++ SDK for API endpoints, recording identifiers,
  * and storage path configuration.
  *
- * @author [@Loong Wan](https://github.com/loong10k)
+ * @author <a href="https://github.com/loong10k">Loong Wan</a>
  * @since 3.0.0
  * @see FaceppApiAddress
  */

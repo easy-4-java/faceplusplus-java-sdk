@@ -28,7 +28,7 @@ import java.util.List;
  * Contains full FaceSet metadata including token, display name, face count,
  * face token list, tags, outer_id, user data, and pagination cursor.
  *
- * @author [@Loong Wan](https://github.com/loong10k)
+ * @author <a href="https://github.com/loong10k">Loong Wan</a>
  * @since 3.0.0
  * @see com.faceplusplus.spring.boot.FaceppFacesetOperations#getFacesetByToken(String, int)
  * @see com.faceplusplus.spring.boot.FaceppFacesetOperations#getFacesetByOuterId(String, int)

@@ -19,7 +19,7 @@ package com.faceplusplus.spring.boot;
  * Async-capable operations for face detection, analysis, comparison, search, and skin analysis.
  * Extends {@link FaceppFaceOperations} inheriting all synchronous face operation methods.
  *
- * @author [@Loong Wan](https://github.com/loong10k)
+ * @author <a href="https://github.com/loong10k">Loong Wan</a>
  * @since 3.0.0
  * @see FaceppFaceOperations
  * @see FaceppTemplate

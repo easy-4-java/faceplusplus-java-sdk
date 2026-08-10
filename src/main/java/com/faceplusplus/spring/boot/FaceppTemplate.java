@@ -6,7 +6,7 @@ import lombok.extern.slf4j.Slf4j;
  * Main entry point for the Face++ SDK.
  * Provides access to face detection/analysis operations and FaceSet management operations.
  *
- * @author [@Loong Wan](https://github.com/loong10k)
+ * @author <a href="https://github.com/loong10k">Loong Wan</a>
  * @since 3.0.0
  * @see FaceppFaceAsyncOperations
  * @see FaceppFacesetAsyncOperations

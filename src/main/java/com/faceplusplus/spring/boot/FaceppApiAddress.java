@@ -8,7 +8,7 @@ import java.text.MessageFormat;
  * URL templates may contain {@code {0}}, {@code {1}}, etc. placeholders that are resolved
  * via {@link #getUrl(Object...)}.
  *
- * @author [@Loong Wan](https://github.com/loong10k)
+ * @author <a href="https://github.com/loong10k">Loong Wan</a>
  * @since 3.0.0
  * @see FaceppFaceOperations
  * @see FaceppFacesetOperations

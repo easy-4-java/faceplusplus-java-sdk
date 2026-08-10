@@ -28,7 +28,7 @@ import java.util.function.Consumer;
  * Async-capable operations for FaceSet management, including asynchronous
  * add/remove face operations and task status queries.
  *
- * @author [@Loong Wan](https://github.com/loong10k)
+ * @author <a href="https://github.com/loong10k">Loong Wan</a>
  * @since 3.0.0
  * @see FaceppFacesetOperations
  * @see FaceppTemplate

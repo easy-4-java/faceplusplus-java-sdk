@@ -29,7 +29,7 @@ import java.util.List;
  * Response from the Face Detect API.
  * Contains the image identifier, detected face count, and an array of face objects.
  *
- * @author [@Loong Wan](https://github.com/loong10k)
+ * @author <a href="https://github.com/loong10k">Loong Wan</a>
  * @since 3.0.0
  * @see com.faceplusplus.spring.boot.FaceppFaceOperations#detectUrl(String, com.faceplusplus.spring.boot.req.FaceDetectOptions)
  */

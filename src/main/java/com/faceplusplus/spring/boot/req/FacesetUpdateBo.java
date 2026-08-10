@@ -8,7 +8,7 @@ import lombok.Data;
  * Business object for updating an existing FaceSet.
  * Allows changing the display name, outer_id, tags, and user data.
  *
- * @author [@Loong Wan](https://github.com/loong10k)
+ * @author <a href="https://github.com/loong10k">Loong Wan</a>
  * @since 3.0.0
  * @see com.faceplusplus.spring.boot.FaceppFacesetOperations#updateFaceset(FacesetUpdateBo)
  */

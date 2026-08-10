@@ -30,7 +30,7 @@ import java.util.List;
  * Contains the comparison confidence score, reference thresholds,
  * image identifiers, and detected face arrays for both input images.
  *
- * @author [@Loong Wan](https://github.com/loong10k)
+ * @author <a href="https://github.com/loong10k">Loong Wan</a>
  * @since 3.0.0
  * @see com.faceplusplus.spring.boot.FaceppFaceOperations#compareUrl(String, String)
  * @see com.faceplusplus.spring.boot.FaceppFaceOperations#compareToken(String, String)

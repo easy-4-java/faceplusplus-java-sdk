@@ -25,7 +25,7 @@ import lombok.EqualsAndHashCode;
  * Response from the FaceSet Delete API.
  * Confirms the deletion of a FaceSet by returning its token and outer_id.
  *
- * @author [@Loong Wan](https://github.com/loong10k)
+ * @author <a href="https://github.com/loong10k">Loong Wan</a>
  * @since 3.0.0
  * @see com.faceplusplus.spring.boot.FaceppFacesetOperations#deleteFaceset(com.faceplusplus.spring.boot.req.FacesetDeleteBo)
  */

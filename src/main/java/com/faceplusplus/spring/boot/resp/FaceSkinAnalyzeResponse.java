@@ -28,7 +28,7 @@ import lombok.EqualsAndHashCode;
  * Contains the face rectangle, skin analysis results, and any warning factors
  * that may have affected the analysis accuracy.
  *
- * @author [@Loong Wan](https://github.com/loong10k)
+ * @author <a href="https://github.com/loong10k">Loong Wan</a>
  * @since 3.0.0
  * @see com.faceplusplus.spring.boot.FaceppFaceOperations#skinAnalyzeUrl(String, com.faceplusplus.spring.boot.req.SkinAnalyzeType, com.faceplusplus.spring.boot.req.SkinAnalyzeOptions)
  */

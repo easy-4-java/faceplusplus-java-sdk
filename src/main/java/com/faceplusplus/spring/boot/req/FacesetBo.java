@@ -9,7 +9,7 @@ import lombok.Data;
  * Contains the display name, outer_id, tags, initial face tokens,
  * user data, and force-merge flag.
  *
- * @author [@Loong Wan](https://github.com/loong10k)
+ * @author <a href="https://github.com/loong10k">Loong Wan</a>
  * @since 3.0.0
  * @see com.faceplusplus.spring.boot.FaceppFacesetOperations#createFaceset(FacesetBo)
  */

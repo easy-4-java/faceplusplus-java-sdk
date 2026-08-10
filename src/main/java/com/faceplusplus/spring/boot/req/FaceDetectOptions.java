@@ -10,7 +10,7 @@ import lombok.Data;
  * Controls landmark detection, attribute analysis, face rectangle filtering,
  * and beauty score ranges.
  *
- * @author [@Loong Wan](https://github.com/loong10k)
+ * @author <a href="https://github.com/loong10k">Loong Wan</a>
  * @since 3.0.0
  * @see com.faceplusplus.spring.boot.FaceppFaceOperations#detectUrl(String, FaceDetectOptions)
  */

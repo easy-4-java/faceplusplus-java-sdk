@@ -9,7 +9,7 @@ import lombok.Data;
  * Options for the Face Analyze API.
  * Controls which facial attributes and landmarks are returned.
  *
- * @author [@Loong Wan](https://github.com/loong10k)
+ * @author <a href="https://github.com/loong10k">Loong Wan</a>
  * @since 3.0.0
  * @see com.faceplusplus.spring.boot.FaceppFaceOperations#analyze(String[], FaceAnalyzeOptions)
  */

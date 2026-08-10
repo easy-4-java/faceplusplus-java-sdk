@@ -8,7 +8,7 @@ import lombok.Data;
  * Represents the bounding rectangle of a detected face in an image.
  * Coordinates are in pixels relative to the top-left corner of the image.
  *
- * @author [@Loong Wan](https://github.com/loong10k)
+ * @author <a href="https://github.com/loong10k">Loong Wan</a>
  * @since 3.0.0
  * @see FaceDetectResponse
  * @see FaceDetailResponse

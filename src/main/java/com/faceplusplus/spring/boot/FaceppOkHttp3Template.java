@@ -37,7 +37,7 @@ import java.util.function.Consumer;
  * Supports synchronous and asynchronous requests, JSON and multipart form data,
  * and automatic response deserialization.
  *
- * @author [@Loong Wan](https://github.com/loong10k)
+ * @author <a href="https://github.com/loong10k">Loong Wan</a>
  * @since 3.0.0
  * @see FaceppProperties
  * @see FaceppResponse

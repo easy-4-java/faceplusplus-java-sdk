@@ -8,7 +8,7 @@ import lombok.Data;
  * Summary information for a FaceSet, typically used in lists or nested within
  * face detail responses. Contains the FaceSet token, tags, and outer_id.
  *
- * @author [@Loong Wan](https://github.com/loong10k)
+ * @author <a href="https://github.com/loong10k">Loong Wan</a>
  * @since 3.0.0
  * @see FaceDetailResponse
  * @see FacesetListResponse.FacesetFetail

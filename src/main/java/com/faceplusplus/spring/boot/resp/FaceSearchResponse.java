@@ -28,7 +28,7 @@ import lombok.EqualsAndHashCode;
  * Contains matching face results, reference confidence thresholds,
  * the image identifier, and the detected face array.
  *
- * @author [@Loong Wan](https://github.com/loong10k)
+ * @author <a href="https://github.com/loong10k">Loong Wan</a>
  * @since 3.0.0
  * @see com.faceplusplus.spring.boot.FaceppFaceOperations#searchUrl(String, com.faceplusplus.spring.boot.req.FaceSearchOptions)
  * @see com.faceplusplus.spring.boot.FaceppFaceOperations#searchToken(String, com.faceplusplus.spring.boot.req.FaceSearchOptions)

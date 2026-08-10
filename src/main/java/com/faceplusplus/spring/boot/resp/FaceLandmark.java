@@ -8,7 +8,7 @@ import lombok.Data;
  * Represents a facial landmark point or region returned by the Face++ API.
  * Contains position and dimension information for a specific facial feature.
  *
- * @author [@Loong Wan](https://github.com/loong10k)
+ * @author <a href="https://github.com/loong10k">Loong Wan</a>
  * @since 3.0.0
  * @see FaceDetectResponse
  */

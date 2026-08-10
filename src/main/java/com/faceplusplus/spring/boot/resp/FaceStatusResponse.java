@@ -28,7 +28,7 @@ import java.util.List;
  * Contains the task identifier, completion status, FaceSet information,
  * and the results of the asynchronous add/remove face operation.
  *
- * @author [@Loong Wan](https://github.com/loong10k)
+ * @author <a href="https://github.com/loong10k">Loong Wan</a>
  * @since 3.0.0
  * @see com.faceplusplus.spring.boot.FaceppFacesetAsyncOperations#getFaceStatusByTaskId(String)
  */

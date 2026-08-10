@@ -30,7 +30,7 @@ import java.util.List;
  * Contains the image identifier, analyzed face count, and an array of face objects
  * with their attributes and landmarks.
  *
- * @author [@Loong Wan](https://github.com/loong10k)
+ * @author <a href="https://github.com/loong10k">Loong Wan</a>
  * @since 3.0.0
  * @see com.faceplusplus.spring.boot.FaceppFaceOperations#analyze(String[], com.faceplusplus.spring.boot.req.FaceAnalyzeOptions)
  */

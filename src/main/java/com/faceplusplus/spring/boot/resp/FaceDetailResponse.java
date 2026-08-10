@@ -28,7 +28,7 @@ import java.util.List;
  * Contains the source image ID, face token, user ID, face rectangle,
  * and the list of FaceSets containing this face.
  *
- * @author [@Loong Wan](https://github.com/loong10k)
+ * @author <a href="https://github.com/loong10k">Loong Wan</a>
  * @since 3.0.0
  * @see com.faceplusplus.spring.boot.FaceppFacesetOperations#getFaceDetail(String)
  */

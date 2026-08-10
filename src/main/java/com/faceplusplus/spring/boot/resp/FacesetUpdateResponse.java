@@ -25,7 +25,7 @@ import lombok.EqualsAndHashCode;
  * Response from the FaceSet Update API.
  * Confirms the update of a FaceSet by returning its token and outer_id.
  *
- * @author [@Loong Wan](https://github.com/loong10k)
+ * @author <a href="https://github.com/loong10k">Loong Wan</a>
  * @since 3.0.0
  * @see com.faceplusplus.spring.boot.FaceppFacesetOperations#updateFaceset(com.faceplusplus.spring.boot.req.FacesetUpdateBo)
  */

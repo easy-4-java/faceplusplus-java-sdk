@@ -27,7 +27,7 @@ import java.util.List;
  * Response from the Get FaceSet List API.
  * Contains the list of FaceSets under the current API key, with pagination support.
  *
- * @author [@Loong Wan](https://github.com/loong10k)
+ * @author <a href="https://github.com/loong10k">Loong Wan</a>
  * @since 3.0.0
  * @see com.faceplusplus.spring.boot.FaceppFacesetOperations#getFacesetList(int, String...)
  */

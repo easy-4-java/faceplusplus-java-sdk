@@ -25,7 +25,7 @@ import lombok.EqualsAndHashCode;
  * Response from the Set Face User ID API.
  * Confirms the face token and the user-defined identifier that was set.
  *
- * @author [@Loong Wan](https://github.com/loong10k)
+ * @author <a href="https://github.com/loong10k">Loong Wan</a>
  * @since 3.0.0
  * @see com.faceplusplus.spring.boot.FaceppFacesetOperations#createFace(String, String)
  */

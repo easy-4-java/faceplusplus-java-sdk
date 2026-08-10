@@ -27,7 +27,7 @@ import java.util.Map;
  * Synchronous operations for the Face++ face recognition API group.
  * Provides methods for face detection, analysis, comparison, search, and skin analysis.
  *
- * @author [@Loong Wan](https://github.com/loong10k)
+ * @author <a href="https://github.com/loong10k">Loong Wan</a>
  * @since 3.0.0
  * @see FaceppFaceAsyncOperations
  * @see FaceppApiAddress
