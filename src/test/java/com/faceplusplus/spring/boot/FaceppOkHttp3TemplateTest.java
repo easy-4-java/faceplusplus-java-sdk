@@ -1,6 +1,7 @@
 package com.faceplusplus.spring.boot;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.json.JsonMapper;
 import com.faceplusplus.spring.boot.resp.FaceppResponse;
 import com.faceplusplus.spring.boot.resp.FaceDetectResponse;
 import okhttp3.*;
@@ -24,7 +25,7 @@ class FaceppOkHttp3TemplateTest {
         properties = new FaceppProperties();
         properties.setAppId("test-key");
         properties.setAppCertificate("test-secret");
-        objectMapper = new ObjectMapper();
+        objectMapper = new JsonMapper();
         // Use a stubbed template that doesn't make real HTTP calls
         template = new StubOkHttp3Template(new OkHttpClient(), objectMapper, properties);
     }

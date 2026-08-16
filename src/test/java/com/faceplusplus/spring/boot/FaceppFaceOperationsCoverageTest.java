@@ -1,6 +1,7 @@
 package com.faceplusplus.spring.boot;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.json.JsonMapper;
 import com.faceplusplus.spring.boot.req.*;
 import com.faceplusplus.spring.boot.resp.*;
 import okhttp3.OkHttpClient;
@@ -29,7 +30,7 @@ class FaceppFaceOperationsCoverageTest {
         properties = new FaceppProperties();
         properties.setAppId("test-key");
         properties.setAppCertificate("test-secret");
-        stubHttpTemplate = new StubOkHttp3Template(new OkHttpClient(), new ObjectMapper(), properties);
+        stubHttpTemplate = new StubOkHttp3Template(new OkHttpClient(), new JsonMapper(), properties);
         template = new FaceppTemplate(stubHttpTemplate, properties);
         operations = new FaceppFaceOperations(template);
     }

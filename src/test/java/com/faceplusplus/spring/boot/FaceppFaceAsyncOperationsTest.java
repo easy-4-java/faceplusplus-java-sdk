@@ -1,6 +1,7 @@
 package com.faceplusplus.spring.boot;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.json.JsonMapper;
 import okhttp3.OkHttpClient;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -17,7 +18,7 @@ class FaceppFaceAsyncOperationsTest {
         FaceppProperties properties = new FaceppProperties();
         properties.setAppId("test-key");
         properties.setAppCertificate("test-secret");
-        FaceppOkHttp3Template httpTemplate = new FaceppOkHttp3Template(new OkHttpClient(), new ObjectMapper(), properties);
+        FaceppOkHttp3Template httpTemplate = new FaceppOkHttp3Template(new OkHttpClient(), new JsonMapper(), properties);
         template = new FaceppTemplate(httpTemplate, properties);
         operations = new FaceppFaceAsyncOperations(template);
     }

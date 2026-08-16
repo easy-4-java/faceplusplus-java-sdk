@@ -1,6 +1,7 @@
 package com.faceplusplus.spring.boot;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.json.JsonMapper;
 import com.faceplusplus.spring.boot.resp.FaceppResponse;
 import okhttp3.*;
 import org.junit.jupiter.api.BeforeEach;
@@ -32,7 +33,7 @@ class FaceppOkHttp3TemplateRealTest {
         properties = new FaceppProperties();
         properties.setAppId("test-key");
         properties.setAppCertificate("test-secret");
-        objectMapper = new ObjectMapper();
+        objectMapper = new JsonMapper();
 
         OkHttpClient client = new OkHttpClient.Builder()
                 .addInterceptor(chain -> {

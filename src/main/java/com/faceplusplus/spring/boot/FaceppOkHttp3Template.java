@@ -16,7 +16,7 @@
 package com.faceplusplus.spring.boot;
 
 import com.alibaba.fastjson.JSONObject;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.databind.ObjectMapper;
 import com.faceplusplus.spring.boot.resp.FaceppResponse;
 import lombok.extern.slf4j.Slf4j;
 import okhttp3.*;
