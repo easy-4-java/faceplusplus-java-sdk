@@ -46,7 +46,7 @@
         <commons-lang3.version>3.20.0</commons-lang3.version>
         <fastjson.version>2.0.62</fastjson.version>
         <guava.version>32.0.0-jre</guava.version>
-        <jackson.version>2.18.9</jackson.version>
+        <jackson-bom.version>2.18.9</jackson-bom.version>
         <junit-jupiter.version>5.11.4</junit-jupiter.version>
         <lombok.version>1.18.46</lombok.version>
         <okhttp.version>4.9.3</okhttp.version>
@@ -63,6 +63,14 @@
     <!-- 依赖版本统一管理（dependencyManagement） -->
     <dependencyManagement>
         <dependencies>
+            <!-- For Jackson BOM -->
+            <dependency>
+                <groupId>com.fasterxml.jackson</groupId>
+                <artifactId>jackson-bom</artifactId>
+                <version>${jackson-bom.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
             <!-- For Lombok -->
             <dependency>
                 <groupId>org.projectlombok</groupId>
@@ -81,12 +89,6 @@
                 <groupId>com.squareup.okhttp3</groupId>
                 <artifactId>okhttp</artifactId>
                 <version>${okhttp.version}</version>
-            </dependency>
-            <!-- For Jackson -->
-            <dependency>
-                <groupId>com.fasterxml.jackson.core</groupId>
-                <artifactId>jackson-databind</artifactId>
-                <version>${jackson.version}</version>
             </dependency>
             <!-- For Guava -->
             <dependency>
