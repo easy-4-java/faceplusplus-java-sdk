@@ -45,7 +45,7 @@
         <maven.version>3.9.16</maven.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <!-- Dependency versions -->
-        <commons-lang3.version>3.18.0</commons-lang3.version>
+        <commons-lang3.version>3.20.0</commons-lang3.version>
         <fastjson.version>2.0.62</fastjson.version>
         <guava.version>32.0.0-jre</guava.version>
         <jackson-bom.version>2.18.9</jackson-bom.version>
