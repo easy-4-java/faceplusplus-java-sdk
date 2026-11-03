@@ -148,11 +148,9 @@ class FaceppOkHttp3TemplateTest {
     }
 
     @Test
-    void shouldThrowOnInvalidJsonDueToRecursiveSafeInstantiate() {
+    void shouldReturnDefaultResponseOnInvalidJson() {
         String json = "invalid json";
-        assertThrows(StackOverflowError.class, () -> {
-            template.readValue(json, FaceppResponse.class);
-        });
+        assertNotNull(template.readValue(json, FaceppResponse.class));
     }
 
     // Test various doRequest overloads
