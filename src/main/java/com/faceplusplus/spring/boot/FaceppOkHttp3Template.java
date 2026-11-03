@@ -862,6 +862,6 @@ public class FaceppOkHttp3Template  {
 	}
 
     private <T> T safeInstantiate(Class<T> cls) {
-        try { return safeInstantiate(cls); } catch (Exception e) { return null; }
+        try { return cls.getDeclaredConstructor().newInstance(); } catch (ReflectiveOperationException | SecurityException e) { return null; }
     }
 }
